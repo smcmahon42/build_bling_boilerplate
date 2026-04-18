@@ -1,0 +1,39 @@
+# CODEOWNERS — who reviews changes to what.
+#
+# Syntax: <path-pattern> <owner> [<owner> ...]
+# Owners can be @user or @org/team. The LAST matching pattern wins.
+#
+# GitHub enforces these reviewers automatically when PRs touch matching paths.
+# https://docs.github.com/en/repositories/managing-your-repositories-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Replace `@YOUR-GH-HANDLE` with your GitHub user or team during /bootstrap-project.
+
+# Default — everything not covered by a later rule
+*                                   @YOUR-GH-HANDLE
+
+# Architecture & decisions
+/docs/decisions/                    @YOUR-GH-HANDLE
+/docs/architecture/                 @YOUR-GH-HANDLE
+
+# Security-sensitive paths
+/docs/security/                     @YOUR-GH-HANDLE
+/.github/workflows/security-scan.yml @YOUR-GH-HANDLE
+/.github/workflows/codeql.yml       @YOUR-GH-HANDLE
+/.github/workflows/dast-scan.yml    @YOUR-GH-HANDLE
+/.github/workflows/license-check.yml @YOUR-GH-HANDLE
+/.github/workflows/sbom.yml         @YOUR-GH-HANDLE
+SECURITY.md                         @YOUR-GH-HANDLE
+
+# Claude instruction surface
+/CLAUDE.md                          @YOUR-GH-HANDLE
+/claude-instructions/               @YOUR-GH-HANDLE
+/.claude/                           @YOUR-GH-HANDLE
+
+# CI / release / ownership config
+/.github/                           @YOUR-GH-HANDLE
+/CODEOWNERS                         @YOUR-GH-HANDLE
+
+# Add module-specific owners as the project grows, e.g.:
+# /apps/api/                        @backend-team
+# /apps/web/                        @frontend-team
+# /packages/shared/                 @platform-team

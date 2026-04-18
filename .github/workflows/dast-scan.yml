@@ -1,0 +1,38 @@
+# OWASP ZAP dynamic application security testing.
+#
+# This workflow is DISABLED by default (only manual dispatch). Enable it once:
+#   1. A preview / staging URL is available for the PR or main branch.
+#   2. You have a ZAP API key (optional but recommended) stored as a secret.
+#
+# When enabled, change the `on:` trigger to deploy_status or workflow_run.
+
+name: dast-scan
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: "Base URL to scan (e.g., https://preview.example.com)"
+        required: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  zap-api-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ZAP API scan
+        uses: zaproxy/action-api-scan@v0.9.0
+        with:
+          target: ${{ github.event.inputs.target_url }}
+          # Provide an OpenAPI/Swagger or GraphQL introspection file to improve coverage:
+          # format: openapi
+          # file: docs/openapi.yaml
+          rules_file_name: ".github/zap-rules.tsv" # optional; ignored if missing
+          fail_action: true
+          allow_issue_writing: true
+          issue_title: "DAST: ZAP scan findings"

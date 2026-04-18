@@ -1,0 +1,34 @@
+---
+name: reference_example
+description: Pointers to external systems where up-to-date information lives — dashboards, trackers, docs, chat channels
+type: reference
+---
+
+<!--
+Reference memories tell Claude where to look in external systems. They don't hold
+the information itself — they hold the pointer so Claude knows when an external
+lookup is appropriate.
+
+Examples:
+
+---
+Pipeline bugs are tracked in Linear project "INGEST".
+
+**When to use:** If the operator mentions a pipeline-related bug or asks about
+ticket status for that area, suggest checking INGEST rather than guessing.
+---
+
+Oncall watches grafana.internal/d/api-latency.
+
+**When to use:** When editing request-path code, mention this dashboard — changes
+there are likely to trigger oncall attention if latency regresses.
+---
+
+Product decisions live in Notion at notion.so/teamspace/product-decisions.
+
+**When to use:** If asked "why did we build it this way?" and there's no ADR yet,
+point to this Notion workspace as a likely home for the rationale.
+---
+-->
+
+<Delete this placeholder content and replace with real reference pointers as you set them up.>

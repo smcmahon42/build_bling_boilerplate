@@ -1,0 +1,92 @@
+# Claude Code reviews PRs on demand when a reviewer comments "@claude".
+#
+# Requires the `ANTHROPIC_API_KEY` secret configured in the repository.
+# Tools are restricted to read-only — Claude cannot push, comment, or modify.
+# The custom prompt anchors the review to this project's OWASP-keyed checklist.
+#
+# Disable this workflow if you don't want an automated Claude review lane —
+# nothing else depends on it.
+
+name: claude-review
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+
+jobs:
+  review:
+    if: |
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Claude review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          allowed_tools: "Read,Glob,Grep,WebSearch,WebFetch"
+          timeout_minutes: "10"
+          custom_prompt: |
+            You are reviewing a pull request for this project. Output a single
+            review comment (markdown) following the structure below.
+
+            ## Review structure (required)
+
+            1. **Summary** — 1–2 sentences stating what the PR does and whether
+               you recommend merge, changes, or block.
+            2. **Correctness** — logic errors, edge cases, concurrency, error
+               handling. Cite `file:line` for each.
+            3. **Tests** — confirm tests were added or updated. If a bug fix,
+               confirm a regression test exists. Flag any disabled or skipped
+               tests. TDD is the project standard (see
+               `claude-instructions/testing-practices.md`).
+            4. **Security (three OWASP lists — see
+               `claude-instructions/security-practices.md`)** — walk every
+               category that the diff plausibly touches and rate it. Use the
+               same severity ladder as `/security-review`:
+               - **OWASP Web Top 10** (A01–A10)
+               - **OWASP LLM Top 10** (LLM01–LLM10)
+               - **OWASP Agentic Top 10** (ASI01–ASI10)
+               Be explicit about n/a rows. Do not invent findings.
+            5. **Documentation** — does the change ship docs in the matching
+               bucket? Is an ADR required and present? (See
+               `claude-instructions/documentation-discipline.md`.)
+            6. **Style / consistency** — Conventional Commits, naming, linter
+               hygiene (see `claude-instructions/commit-conventions.md`).
+            7. **Blocking / non-blocking** — group findings as MUST FIX, SHOULD
+               FIX, or NITS.
+
+            ## Review invariants
+
+            - Read-only: you cannot push, comment, or modify. Produce the
+              review text and stop.
+            - Cite file and line for every concrete finding (`path/to/file.ext:NN`).
+            - Prefer precise quotes over generic advice.
+            - If the diff is huge, focus on the highest-impact 5–10 findings
+              and say so.
+            - Respect the project's house rules in `CLAUDE.md`.
+
+            ## Output format
+
+            Start with a fenced summary block:
+
+            ```
+            RECOMMENDATION: <approve | request-changes | block>
+            MUST FIX:   <N>
+            SHOULD FIX: <N>
+            NITS:       <N>
+            ```
+
+            Then the sections above, each with concrete findings or "None observed".
