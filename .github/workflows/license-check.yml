@@ -1,0 +1,61 @@
+name: license-check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  licenses:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Syft to enumerate package licenses
+        uses: anchore/sbom-action@v0
+        with:
+          path: "."
+          format: spdx-json
+          artifact-name: licenses.spdx.json
+
+      - name: Deny copyleft licenses
+        run: |
+          set -euo pipefail
+
+          # Copyleft licenses to deny by default. If the project needs one of these,
+          # document the exception in an ADR and add it to ACCEPT_COPYLEFT below.
+          DENY=("GPL-2.0" "GPL-3.0" "AGPL-3.0" "LGPL-2.1" "LGPL-3.0")
+
+          # Space-separated list of licenses that are explicitly accepted despite being copyleft.
+          ACCEPT_COPYLEFT=""
+
+          if ! command -v jq >/dev/null 2>&1; then
+            sudo apt-get update -y && sudo apt-get install -y jq
+          fi
+
+          found=""
+          for deny in "${DENY[@]}"; do
+            if [[ " $ACCEPT_COPYLEFT " == *" $deny "* ]]; then
+              continue
+            fi
+            hits=$(jq -r --arg d "$deny" '
+              .packages[]? as $p
+              | ($p.licenseConcluded // "") as $lc
+              | ($p.licenseDeclared // "") as $ld
+              | select(($lc | contains($d)) or ($ld | contains($d)))
+              | "\($p.name // "?") \(if $p.versionInfo then "@"+$p.versionInfo else "" end) [\($lc)/\($ld)]"
+            ' licenses.spdx.json || true)
+            if [ -n "$hits" ]; then
+              echo "::error::Copyleft license $deny detected:"
+              echo "$hits"
+              found=1
+            fi
+          done
+
+          if [ -n "$found" ]; then
+            exit 1
+          fi
+          echo "No copyleft licenses detected."

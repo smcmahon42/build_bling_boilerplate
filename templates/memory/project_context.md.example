@@ -1,0 +1,43 @@
+---
+name: project_context
+description: Time-bound and context-dependent facts about {{PROJECT_NAME}} — deadlines, stakeholders, current constraints
+type: project
+---
+
+<!--
+Project memories capture facts that can't be derived from the code or git history:
+who cares about what, why we're doing it this way, what's off-limits for now.
+Convert relative dates to absolute (e.g. "by next Friday" -> "by 2026-05-15") so
+the memory stays interpretable over time.
+
+Structure each entry as:
+
+  <fact or decision>
+
+  **Why:** <motivation — constraint, deadline, stakeholder ask>
+
+  **How to apply:** <how this should shape suggestions>
+
+Examples:
+
+---
+Merge freeze starts 2026-05-12 for the v1.0 cut. Only bug fixes merge after that.
+
+**Why:** Marketing launch scheduled 2026-05-22; engineering needs 10 days of stability
+for final QA and on-call rotation.
+
+**How to apply:** Any non-critical PR suggested after 2026-05-12 should be flagged
+("this won't land before release") and queued for the next cycle.
+---
+
+The auth rewrite is driven by compliance requirements, not tech debt.
+
+**Why:** Legal flagged session-token storage as non-compliant with the new data policy.
+Must land before the audit in Q3.
+
+**How to apply:** Scope decisions favor compliance over ergonomics. Don't suggest
+"while we're in here, let's also refactor X" — keep the change tight.
+---
+-->
+
+<Delete this placeholder content and replace with real project facts as they emerge.>

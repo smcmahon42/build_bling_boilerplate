@@ -1,0 +1,81 @@
+# Machine-readable skill index. Single source of truth for skill discovery.
+#
+# Schema:
+#   version:     integer       — bump when the schema itself changes
+#   skills:      array          — one entry per skill file in this directory
+#     - name:         string    — must match the skill's frontmatter `name`
+#       file:         string    — path relative to this file (<name>.md)
+#       description:  string    — one-line purpose
+#       invoke:       string    — the slash command (e.g. "/security-review")
+#       triggers:     string[]  — task tags that should load this skill (see tag vocabulary)
+#       scale:        string[]  — task scales this skill applies to: small | medium | large
+#       tools:        string[]  — Claude Code tools the skill needs (for permission-planning)
+#       lifecycle:    string    — once | recurring — whether the skill runs once per project or repeatedly
+#
+# Tag vocabulary (language-agnostic). Add new tags in a PR — keep the set small.
+#
+#   Domain:    security, testing, documentation, dependencies, architecture,
+#              deployment, ci, ops, data, performance
+#   Activity:  bootstrap, review, audit, scaffold, diagnose, refactor, migrate
+#   Surface:   frontend, backend, service, library, agent, model, api, cli
+#
+# The `triggers` field is how a task maps to a skill: extract tags from the
+# task ("add auth endpoint" -> [security, backend, api]) and match against
+# skills whose triggers overlap. Ties are broken by scale fit.
+
+version: 1
+
+skills:
+  - name: bootstrap-project
+    file: bootstrap-project.md
+    description: One-time template bootstrap after cloning. Replaces placeholders, trims optional pieces, seeds Claude memory, offers GitHub setup.
+    invoke: /bootstrap-project
+    triggers: [bootstrap, scaffold, ci, documentation]
+    scale: [small, medium, large]
+    tools: [Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion]
+    lifecycle: once
+
+  - name: security-review
+    file: security-review.md
+    description: Walk the current diff against OWASP Web + LLM + Agentic (30 items) and produce a prioritized findings table with CI coverage audit.
+    invoke: /security-review
+    triggers: [security, review, audit, agent, model, api, backend, frontend]
+    scale: [small, medium, large]
+    tools: [Read, Glob, Grep, Bash]
+    lifecycle: recurring
+
+  - name: dep-audit
+    file: dep-audit.md
+    description: Language-detecting dependency vulnerability scan + 5-point check on newly-introduced deps.
+    invoke: /dep-audit
+    triggers: [security, dependencies, audit, ci]
+    scale: [small, medium, large]
+    tools: [Read, Glob, Grep, Bash]
+    lifecycle: recurring
+
+  - name: test-gaps
+    file: test-gaps.md
+    description: Coverage snapshot + prioritized list of tests to write next, weighted by impact.
+    invoke: /test-gaps
+    triggers: [testing, audit, review]
+    scale: [small, medium, large]
+    tools: [Read, Glob, Grep, Bash]
+    lifecycle: recurring
+
+  - name: new-adr
+    file: new-adr.md
+    description: Scaffold the next ADR with correct numbering, template copy, status line, and index update.
+    invoke: /new-adr
+    triggers: [architecture, documentation, scaffold]
+    scale: [medium, large]
+    tools: [Read, Write, Edit, Glob, Bash, AskUserQuestion]
+    lifecycle: recurring
+
+  - name: new-skill
+    file: new-skill.md
+    description: Author a new skill — template, review criteria, index update, and self-review pass.
+    invoke: /new-skill
+    triggers: [scaffold, documentation]
+    scale: [small, medium]
+    tools: [Read, Write, Edit, Glob, AskUserQuestion]
+    lifecycle: recurring

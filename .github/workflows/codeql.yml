@@ -1,0 +1,56 @@
+name: codeql
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 2" # weekly Tuesday 06:00 UTC
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      languages: ${{ steps.detect.outputs.languages }}
+      any: ${{ steps.detect.outputs.any }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect
+        run: |
+          set -euo pipefail
+          langs=()
+          test -f go.mod && langs+=('"go"')
+          test -f package.json && langs+=('"javascript-typescript"')
+          { test -f pyproject.toml || test -f requirements.txt; } && langs+=('"python"')
+          # Note: CodeQL also supports java-kotlin, csharp, cpp, ruby, swift, actions. Add as needed.
+          if [ ${#langs[@]} -eq 0 ]; then
+            echo "any=false" >> "$GITHUB_OUTPUT"
+            echo "languages=[]" >> "$GITHUB_OUTPUT"
+          else
+            echo "any=true" >> "$GITHUB_OUTPUT"
+            printf 'languages=[%s]\n' "$(IFS=,; echo "${langs[*]}")" >> "$GITHUB_OUTPUT"
+          fi
+
+  analyze:
+    needs: detect
+    if: needs.detect.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(needs.detect.outputs.languages) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"

@@ -1,0 +1,42 @@
+---
+name: feedback_example
+description: Example feedback memory — delete or rename once you've accumulated real feedback
+type: feedback
+---
+
+<!--
+Feedback memories hold guidance the operator has given: what to keep doing, what to stop
+doing. Record both corrections AND confirmations — if Claude only saves corrections, it
+drifts away from approaches the operator has already validated.
+
+Structure each feedback entry as:
+
+  <rule>
+
+  **Why:** <reason — often a past incident or strong preference>
+
+  **How to apply:** <when/where this kicks in>
+
+Examples:
+
+---
+Integration tests must hit a real database, not mocks.
+
+**Why:** Previous project had mocked tests pass while a prod migration failed silently.
+Divergence went undetected for weeks.
+
+**How to apply:** For any test that touches the data layer — unit tests of pure logic
+can still use test doubles, but the moment a DB query is involved, use testcontainers
+or a real local Postgres.
+---
+
+Keep responses terse — no trailing "I just did X" summaries; the diff is visible.
+
+**Why:** Operator reads diffs directly and finds recap paragraphs noise.
+
+**How to apply:** End-of-turn summaries at most one sentence. No bullet lists recapping
+what already shipped.
+---
+-->
+
+<Delete this placeholder content and replace with real feedback as it accumulates.>

@@ -1,0 +1,85 @@
+# Label taxonomy for this project.
+#
+# Sync with: gh label sync .github/labels.yml
+# (requires the gh-labels extension: gh extension install heaths/gh-label)
+#
+# Adjust area:* labels to match your modules.
+
+# Type
+- name: "type:feature"
+  color: "0e8a16"
+  description: "New capability"
+- name: "type:bug"
+  color: "d73a4a"
+  description: "Defect or regression"
+- name: "type:chore"
+  color: "cfd3d7"
+  description: "Tooling, deps, config"
+- name: "type:docs"
+  color: "0075ca"
+  description: "Documentation only"
+- name: "type:epic"
+  color: "5319e7"
+  description: "Parent issue for a multi-issue effort"
+- name: "type:adr"
+  color: "6f42c1"
+  description: "Architectural Decision Record proposal"
+- name: "type:refactor"
+  color: "bfd4f2"
+  description: "Internal reshape, no behavior change"
+
+# Priority
+- name: "priority:p0"
+  color: "b60205"
+  description: "Drop everything"
+- name: "priority:p1"
+  color: "ff7034"
+  description: "Next up"
+- name: "priority:p2"
+  color: "fbca04"
+  description: "Scheduled"
+- name: "priority:p3"
+  color: "c5def5"
+  description: "Nice to have"
+
+# Status
+- name: "status:blocked"
+  color: "e99695"
+  description: "Waiting on something"
+- name: "status:in-review"
+  color: "bfdadc"
+  description: "PR open"
+- name: "status:needs-info"
+  color: "fef2c0"
+  description: "Waiting on reporter"
+
+# Area — REPLACE these with your project's modules during bootstrap
+- name: "area:api"
+  color: "1d76db"
+  description: "Backend / API"
+- name: "area:web"
+  color: "1d76db"
+  description: "Web frontend"
+- name: "area:docs"
+  color: "1d76db"
+  description: "Documentation"
+- name: "area:ci"
+  color: "1d76db"
+  description: "CI / CD / tooling"
+
+# Cross-cutting
+- name: "security"
+  color: "ee0701"
+  description: "Security-relevant"
+- name: "breaking"
+  color: "b60205"
+  description: "Breaking change"
+- name: "dependencies"
+  color: "0366d6"
+  description: "Dependency bump"
+- name: "good first issue"
+  color: "7057ff"
+  description: "Suitable for newcomers"
+- name: "help wanted"
+  color: "008672"
+  description: "Extra attention needed"

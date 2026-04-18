@@ -1,0 +1,17 @@
+# OWASP ZAP rule suppressions. Tab-separated.
+# Columns: RuleID<TAB>Threshold<TAB>Comment
+#
+# Threshold values:
+#   IGNORE — rule is disabled (no alerts raised).
+#   LOW    — only HIGH and MEDIUM severities raised.
+#   MEDIUM — only HIGH severity raised (default for most rules).
+#   HIGH   — suppress unless severity is CRITICAL-equivalent.
+#
+# Keep this file short. Every suppression is a deliberate decision — document
+# WHY in the comment. Review quarterly; suppressions rot.
+#
+# Full rule catalog: https://www.zaproxy.org/docs/alerts/
+
+# 10003	IGNORE	X-Content-Type-Options: set at CDN, not app. Revisit if CDN changes.
+# 10015	IGNORE	Incomplete-or-no-cache-control: static asset routes intentionally long-lived.
+# 10063	IGNORE	Permissions-Policy: TODO — audit and enable with a concrete policy.

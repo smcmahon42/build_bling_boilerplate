@@ -1,0 +1,22 @@
+---
+name: user_role
+description: Who the operator is, their role, and how they like to collaborate with Claude on this project
+type: user
+---
+
+<!--
+Replace the below with real information. A few honest sentences beat a detailed profile
+that doesn't match reality. Examples:
+
+- "Staff engineer, primarily backend (Go + Postgres). New to React; prefer frontend
+  explanations framed in terms of backend analogues."
+- "Product designer learning to code. Comfortable with HTML/CSS, new to TS. Prefer
+  step-by-step explanations and lots of comments in generated code."
+- "Solo founder. Context-switches often. Short, direct answers beat thorough ones."
+-->
+
+I'm {{OPERATOR_ROLE}} working on {{PROJECT_NAME}} ({{PRIMARY_STACK}}).
+
+How I like to collaborate:
+- ...
+- ...

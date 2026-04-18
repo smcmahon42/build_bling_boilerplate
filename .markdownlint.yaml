@@ -1,0 +1,28 @@
+# Relaxed markdownlint config — enforce structure, not style.
+
+default: true
+
+# Allow long lines (tables, URLs, code examples).
+MD013: false
+
+# Allow inline HTML (we use <!-- comments --> in templates).
+MD033: false
+
+# Allow duplicate headings at different levels (e.g., "## Summary" in multiple sections).
+MD024:
+  siblings_only: true
+
+# First line doesn't need to be a top-level heading (front-matter files, etc.).
+MD041: false
+
+# Blank-lines-around-fences is pure style; we prefer dense templates.
+MD031: false
+
+# Blank-lines-around-lists is pure style; many of our templates run headings
+# directly into lists with no intervening paragraph.
+MD032: false
+
+# Requiring a language tag on every fence is noisy for prose docs where most
+# blocks are plain text or mixed illustrations. We accept the loss of syntax
+# highlighting in exchange for less friction authoring.
+MD040: false

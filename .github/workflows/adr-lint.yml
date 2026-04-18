@@ -1,0 +1,55 @@
+name: adr-lint
+
+on:
+  pull_request:
+    paths:
+      - "docs/decisions/**"
+
+permissions:
+  contents: read
+
+jobs:
+  adr-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify ADR filename format
+        run: |
+          set -euo pipefail
+          fail=0
+          for f in docs/decisions/*.md; do
+            base="$(basename "$f")"
+            case "$base" in
+              README.md|TEMPLATE.md) continue;;
+              [0-9][0-9][0-9][0-9]-*.md) ;;
+              *)
+                echo "::error file=$f::ADR filename must match NNNN-slug.md"
+                fail=1
+                ;;
+            esac
+          done
+          exit "$fail"
+
+      - name: Verify ADRs have a Status line
+        run: |
+          set -euo pipefail
+          fail=0
+          for f in docs/decisions/[0-9][0-9][0-9][0-9]-*.md; do
+            if ! grep -qE '^\s*[-*]\s+\*\*Status:\*\*' "$f"; then
+              echo "::error file=$f::ADR missing a **Status:** line"
+              fail=1
+            fi
+          done
+          exit "$fail"
+
+      - name: Verify no duplicate ADR numbers
+        run: |
+          set -euo pipefail
+          dupes=$(ls -1 docs/decisions/[0-9][0-9][0-9][0-9]-*.md 2>/dev/null \
+            | sed -E 's|.*/([0-9]{4})-.*|\1|' \
+            | sort | uniq -d)
+          if [ -n "$dupes" ]; then
+            echo "::error::Duplicate ADR numbers: $dupes"
+            exit 1
+          fi

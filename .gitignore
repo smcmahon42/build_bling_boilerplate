@@ -1,0 +1,53 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+!.vscode/extensions.json
+*~
+
+# Environment secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Claude Code local-only state
+.claude/settings.local.json
+.claude/worktrees/
+
+# SBOM / scan artifacts
+sbom.cyclonedx.json
+licenses.spdx.json
+coverage.out
+coverage/
+.nyc_output/
+htmlcov/
+*.lcov
+*.cov
+
+# Common language build/caches — enable as your stack grows
+# Node
+node_modules/
+dist/
+build/
+# Go
+bin/
+*.test
+*.out
+vendor/
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+# Rust
+target/
+
+# Playwright
+playwright-report/
+test-results/
