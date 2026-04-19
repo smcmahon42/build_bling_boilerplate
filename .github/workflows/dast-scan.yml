@@ -23,7 +23,7 @@ jobs:
   zap-api-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: ZAP API scan
         uses: zaproxy/action-api-scan@v0.9.0
