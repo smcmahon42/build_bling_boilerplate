@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.com/agent-primitives/result.schema.json",
+  "title": "Result",
+  "description": "A typed output from a Task. The consumer (possibly another agent) MUST be able to act on this without re-parsing prose. Free-text summaries live inside 'output' under a schema-defined field, not as the Result itself.",
+  "type": "object",
+  "required": ["result_id", "task_id", "status", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "result_id": {
+      "type": "string",
+      "description": "Content-addressed id: hash(task_id, output, provenance.step_id). Two identical productions of the same Task yield identical result_ids."
+    },
+    "task_id": {
+      "type": "string",
+      "description": "The task_id this Result answers."
+    },
+    "status": {
+      "enum": ["ok", "partial", "error"],
+      "description": "'partial' means the output is usable but incomplete (e.g., budget hit before all items processed)."
+    },
+    "output": {
+      "type": "object",
+      "description": "Kind-specific output payload. MUST validate against the kind's output schema at the Task's declared version. Absent iff status == 'error'."
+    },
+    "error": {
+      "type": "object",
+      "description": "Present iff status != 'ok'. Present alongside 'output' when status == 'partial'.",
+      "required": ["code", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
+          "description": "Stable machine-readable error code (e.g., 'budget.exceeded', 'input.invalid', 'capability.denied'). Agents branch on this; humans read 'message'."
+        },
+        "message": { "type": "string" },
+        "retryable": {
+          "type": "boolean",
+          "description": "Whether retrying with the same inputs could succeed (transient vs. permanent failure)."
+        },
+        "details": { "type": "object" }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Producer's self-reported confidence in 'output'. Consumers may threshold on this before acting."
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Claims in 'output' supported by citations. Enables verification and training.",
+      "items": { "$ref": "evidence.schema.json" }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tokens_in": { "type": "integer", "minimum": 0 },
+        "tokens_out": { "type": "integer", "minimum": 0 },
+        "wall_seconds": { "type": "number", "minimum": 0 },
+        "cost_usd": { "type": "number", "minimum": 0 }
+      }
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json",
+      "description": "Who produced this Result. Different from the Task's provenance (which identifies the caller)."
+    }
+  }
+}

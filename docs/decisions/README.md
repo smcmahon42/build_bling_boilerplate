@@ -10,6 +10,11 @@ See [0001](0001-record-architecture-decisions.md) for why this project uses ADRs
 | --- | --- | --- | --- |
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | Accepted | <!-- YYYY-MM-DD filled on merge --> |
 | [0002](0002-boundary-annotation-enforcement.md) | Enforce boundary conventions via in-code annotations + allowlist | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
+| [0003](0003-agent-primitives-as-foundation.md) | Typed agent primitives are the canonical handoff between rings | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
+| [0004](0004-contracts-as-source-of-truth.md) | Machine-readable contracts are the source of truth; code is generated | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
+| [0005](0005-structured-logging-and-redaction.md) | Structured JSON logs with mandatory correlation fields and a redaction layer | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
+| [0006](0006-human-surfaces-are-views-over-contracts.md) | Human surfaces are thin views over contracts, never the other way around | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
+| [0007](0007-opentelemetry-and-correlation.md) | OpenTelemetry for tracing and metrics, with Provenance as the correlation anchor | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
 
 <!--
 Add new rows here in number order. When a new ADR supersedes an old one, keep both rows and update the old row's Status to "Superseded by NNNN".

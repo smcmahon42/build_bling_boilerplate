@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.com/kinds/summarize.thread/1.0.0/input.schema.json",
+  "title": "summarize.thread input (v1.0.0)",
+  "description": "Example input schema for a task kind. Shows the shape of a Task.inputs field when Task.kind == 'summarize.thread'. Copy as the starting point for a new kind; replace $id base and the domain-specific fields.",
+  "type": "object",
+  "required": ["thread_id"],
+  "additionalProperties": false,
+  "properties": {
+    "thread_id": {
+      "type": "string",
+      "description": "Stable id of the thread to summarize. Prefer content-addressed ids when possible."
+    },
+    "since": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Only include messages at or after this timestamp. Omit to summarize the whole thread."
+    },
+    "audience": {
+      "enum": ["author", "reviewer", "third_party"],
+      "description": "Who the summary is for. Producers may tune style on this."
+    }
+  }
+}

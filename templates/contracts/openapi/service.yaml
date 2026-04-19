@@ -1,0 +1,112 @@
+openapi: 3.1.0
+info:
+  title: "{{SERVICE_NAME}}"
+  version: "0.1.0"
+  description: |
+    {{SERVICE_DESCRIPTION}}
+
+    This service accepts typed Tasks and returns typed Results. See
+    `templates/agent-primitives/` for the shared primitives this contract references.
+  contact:
+    name: "{{OWNER}}"
+
+servers:
+  - url: "https://{host}/v1"
+    variables:
+      host:
+        default: "api.example.com"
+
+security:
+  - capabilityToken: []
+
+paths:
+  /tasks:
+    post:
+      operationId: submitTask
+      summary: Submit a Task for synchronous execution.
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+          description: Dedup key. Equals the Task.idempotency_key (typically = task_id).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../../agent-primitives/schemas/task.schema.json"
+      responses:
+        "200":
+          description: Result produced. Check `status` field for ok / partial / error.
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+        "400":
+          description: Malformed request (invalid Task, bad signature on token).
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+        "401":
+          description: Capability token missing, expired, or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+        "403":
+          description: Capability token does not grant the requested action.
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+        "429":
+          description: Rate-limited or budget exceeded. Retryable per Result.error.retryable.
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+        "500":
+          description: Producer failure. Result.error carries machine-readable code.
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+
+  /tasks/{task_id}:
+    get:
+      operationId: getResult
+      summary: Fetch the Result for a previously submitted Task. Content-addressed id enables cache reuse.
+      parameters:
+        - in: path
+          name: task_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Result available.
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+        "404":
+          description: No Result for that task_id (never submitted, or retention expired).
+          content:
+            application/json:
+              schema:
+                $ref: "../../agent-primitives/schemas/result.schema.json"
+
+components:
+  securitySchemes:
+    capabilityToken:
+      type: http
+      scheme: bearer
+      bearerFormat: capability-token
+      description: |
+        Bearer token carrying a Base64URL-encoded CapabilityToken
+        (see `templates/agent-primitives/schemas/capability-token.schema.json`).
+        The server validates signature, expiry, subject, and that the token's
+        capabilities cover the requested action.

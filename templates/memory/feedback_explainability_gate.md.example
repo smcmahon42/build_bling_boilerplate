@@ -1,0 +1,21 @@
+---
+name: Explainability gate — READMEs as a code-quality signal
+description: Every code boundary must have a plain-English README. If the README is hard to write, the code needs refactoring, not better docs.
+type: feedback
+---
+
+Every meaningful code boundary (package, module, component group, service) ships with a `README.md` that answers three questions in plain English:
+
+1. **What does this do?** — the job it performs, not the functions it exports.
+2. **Why does it exist as a separate thing?** — what would break if it were merged into its neighbor.
+3. **How does it connect?** — what it receives, what it emits, who calls it, who it calls.
+
+See [`claude-instructions/component-explainability.md`](../../claude-instructions/component-explainability.md) for the full four-question pattern and the 20–40-line target shape.
+
+**Why:** This is a code-quality gate disguised as a doc rule. If the README is hard to write in plain English, the boundary is unclear — the code needs refactoring, not just more paragraphs. AI-generated code is especially prone to being technically correct but structurally unclear; this discipline forces clarity before the structure rots.
+
+**How to apply:**
+- Every new directory or significant refactor ships a README in the same PR.
+- When writing a README for existing code, flag directories where the explanation is hard to write — that is a refactoring signal, not a documentation problem. File it as an issue, don't paper over it with vague prose.
+- Two-pass workflow on an existing codebase: Pass 1 = write READMEs and flag issues. Pass 2 = refactor code; companion docs follow.
+- If you can't answer "why does this exist as a separate thing?" in one sentence, the answer is probably "it shouldn't" — consider collapsing it into its neighbor.

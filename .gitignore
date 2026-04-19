@@ -37,6 +37,8 @@ bin/
 *.test
 *.out
 vendor/
+templates/human-surface/cli-go/cli
+templates/mcp-server/go/server
 # Python
 __pycache__/
 *.pyc

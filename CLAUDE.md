@@ -47,6 +47,10 @@ For destructive actions (deletions, force-pushes, production writes, external me
 | Security review or threat modeling | `claude-instructions/security-practices.md` |
 | Adding a dependency | `claude-instructions/dependency-vetting.md` |
 | Creating a module or boundary | `claude-instructions/component-explainability.md` |
+| An agent-to-agent call, a new task kind, or a capability delegation | `claude-instructions/agent-primitives.md` |
+| Adding or changing a contract (OpenAPI, JSON Schema, protobuf) | `claude-instructions/contract-discipline.md` |
+| Logging, redaction, error-line shape, correlation fields | `claude-instructions/logging-practices.md` |
+| Tracing, metrics, OpenTelemetry wiring across rings | `claude-instructions/observability-practices.md` |
 | An architectural decision | `docs/decisions/README.md` |
 | Planning an epic or filing issues | `claude-instructions/epics-and-projects.md` |
 | Writing or editing Claude memory | `claude-instructions/claude-memory.md` |
