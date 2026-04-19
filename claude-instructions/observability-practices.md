@@ -32,7 +32,7 @@ Minimum spans per process:
    - `result.status` (ok / partial / error)
    - On `status = error`: `error.code`, `error.retryable`
    - `metrics.tokens_in`, `metrics.tokens_out`, `metrics.wall_seconds`, `metrics.cost_usd` (when populated)
-3. **Outbound calls.** Any HTTP / gRPC / MCP call to another ring is a span. Use the OTel instrumentation for the client library where available.
+4. **Outbound calls.** Any HTTP / gRPC / MCP call to another ring is a span. Use the OTel instrumentation for the client library where available.
 
 Spans that would be purely decorative are not worth the cost. A span is warranted when a question like "how long did X take?" or "how often does X fail?" gets asked during incident review.
 
