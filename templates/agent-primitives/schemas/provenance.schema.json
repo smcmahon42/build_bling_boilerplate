@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.com/agent-primitives/provenance.schema.json",
+  "title": "Provenance",
+  "description": "Who produced this object, with what inputs, at which step in an agent call graph. Every typed object produced by an agent carries Provenance so downstream rings can reason about trust and lineage.",
+  "type": "object",
+  "required": ["produced_by", "produced_at", "step_id"],
+  "additionalProperties": false,
+  "properties": {
+    "produced_by": {
+      "type": "object",
+      "required": ["agent_id"],
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "description": "Stable identifier for the producer (e.g., 'iris.summarizer.v3')."
+        },
+        "model": {
+          "type": "string",
+          "description": "Model name/version if an LLM produced this (e.g., 'claude-opus-4-7'). Omit for deterministic tools."
+        },
+        "tool": {
+          "type": "string",
+          "description": "Deterministic tool name if a non-LLM tool produced this. Omit for LLM producers."
+        }
+      }
+    },
+    "produced_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 timestamp when this object was produced."
+    },
+    "step_id": {
+      "type": "string",
+      "description": "Opaque id for this production step. Stable across retries of the same logical call (use the idempotency key if you have one)."
+    },
+    "parent_step_id": {
+      "type": "string",
+      "description": "step_id of the task that invoked this producer, if any. Enables walking the call tree."
+    },
+    "trace_id": {
+      "type": "string",
+      "description": "Trace id shared across the entire workflow. OpenTelemetry-compatible (32 hex chars)."
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Content-addressed ids of inputs consumed at this step. Format: '<algo>:<digest>' (e.g., 'sha256:abc123...'). Enables dedup and replay across rings.",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+:[A-Za-z0-9_\\-]+$"
+      }
+    },
+    "ring": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Depth in the agent call tree. 0 = human-facing. Incremented on each agent-to-agent delegation."
+    }
+  }
+}

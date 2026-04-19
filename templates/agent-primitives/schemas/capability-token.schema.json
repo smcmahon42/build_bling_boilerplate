@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.com/agent-primitives/capability-token.schema.json",
+  "title": "CapabilityToken",
+  "description": "Scoped, attenuable authority passed from an outer ring to an inner ring. Inner rings MAY narrow (attenuate) the token before delegating further; they MUST NOT widen it. Modeled on macaroons: authority = caveats, not identity.",
+  "type": "object",
+  "required": ["token_id", "issuer", "subject", "capabilities", "expires_at"],
+  "additionalProperties": false,
+  "properties": {
+    "token_id": {
+      "type": "string",
+      "description": "Unique id for this token (useful for revocation and audit)."
+    },
+    "issuer": {
+      "type": "string",
+      "description": "agent_id of the issuing ring."
+    },
+    "subject": {
+      "type": "string",
+      "description": "agent_id the token is issued to. Only this subject may present it."
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The set of permitted actions. Empty array means the token grants nothing — reject such tokens.",
+      "items": {
+        "type": "object",
+        "required": ["action"],
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
+            "description": "Verb.resource (e.g., 'read.thread', 'post.summary', 'invoke.tool.search')."
+          },
+          "scope": {
+            "type": "object",
+            "description": "Resource selectors that narrow the action (e.g., {'thread_id': 't_123'}, {'tenant': 'acme'})."
+          }
+        }
+      }
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 timestamp after which the token MUST be rejected."
+    },
+    "attenuated_from": {
+      "type": "string",
+      "description": "token_id of the parent token this one narrows. Enables auditing the delegation chain."
+    },
+    "nonce": {
+      "type": "string",
+      "description": "Random value to prevent replay. Producers SHOULD track seen nonces per subject."
+    },
+    "signature": {
+      "type": "string",
+      "description": "Issuer's signature over the canonical serialization of this token (excluding the signature field). Verifiers reject tokens whose signature doesn't match the issuer's known key."
+    }
+  }
+}

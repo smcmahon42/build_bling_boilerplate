@@ -1,0 +1,17 @@
+---
+name: Never override CI — no exceptions
+description: NEVER use --admin, --force, --no-verify, or any bypass to merge a PR when CI is failing or unavailable
+type: feedback
+---
+
+NEVER override CI to merge a PR. No `--admin`, no `--force`, no `--no-verify`, no bypassing required checks. EVER.
+
+**Why:** CI is the gate. Overriding it — even when it "looks like just an infrastructure issue" — undermines the entire purpose of automated testing. Once bypass becomes a habit, the gate no longer catches anything. One exception trains everyone that exceptions are fine.
+
+**How to apply:**
+- If CI fails because of an infrastructure problem (runners unavailable, timeout, flaky service), wait and re-trigger. Do NOT merge.
+- If CI fails because of code, fix the code and push again.
+- If CI is stuck for a long time, tell the operator and ask what they want to do. Never decide to bypass on your own.
+- This applies even when every test passes locally. CI is the gate, period.
+- Pre-commit hooks follow the same rule: `--no-verify` is not a tool you reach for.
+- The one legitimate reason to bypass is an explicit, in-writing operator request acknowledging what is being skipped and why — and even then, prefer fixing the underlying issue.

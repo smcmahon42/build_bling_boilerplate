@@ -1,0 +1,18 @@
+---
+name: Never assume — verify before claiming
+description: Core rule — never speculate about state, structure, or what exists. Read or grep first, always.
+type: feedback
+---
+
+Never assume anything about the codebase, the project state, or the operator's intent. If a fact isn't directly observed in the current session, verify it before stating it.
+
+**Why:** Memory, training-time knowledge, and plausible inference all produce confident-sounding claims that turn out to be wrong. A wrong premise drives a wrong recommendation, and the operator has to spend attention correcting the mistake rather than making progress. The cost of one `Glob`/`Grep`/`Read` is tiny; the cost of a wrong claim compounds.
+
+**How to apply:**
+- Before claiming "X doesn't exist" → grep across every plausible tree (backend, frontend, tests, docs), not just the one you expect
+- Before claiming "Y is wired" or "Y is not wired" → trace actual call sites in production code (not tests) end-to-end
+- Before claiming "Z is missing" → search under multiple plausible names (registry, catalog, library, schema, manifest)
+- When the operator asks "where are we with X" → the answer starts with `Glob`/`Grep`/`Read`, not with memory or extrapolation
+- If you're tempted to phrase something with "probably," "likely," "I think," or "presumably" — that's the cue to STOP and verify
+- Inventory questions deserve inventories, not opinions
+- Absence of evidence ≠ evidence of absence: a single negative grep does not prove a thing doesn't exist

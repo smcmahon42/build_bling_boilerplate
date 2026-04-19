@@ -1,0 +1,21 @@
+---
+name: Constructive review on every feature request
+description: Proactively flag business, security, UX, observability, and architectural concerns before building
+type: feedback
+---
+
+On every feature request, proactively provide constructive feedback across five categories before implementation, and again after implementation:
+
+1. **Business-model implications** — does this cost money per call, does it need tier gating, does it cannibalize a paid feature, does it create a free-tier leak?
+2. **Security surface** — OWASP Web / LLM / Agentic impact, new trust boundaries, input validation gaps, secret handling, capability scope changes.
+3. **UX edge cases** — empty states, error message clarity, loading states, cache mismatch windows, feature discoverability, accessibility.
+4. **Observability gaps** — can we tell if the feature is working, can we tell if it's being used, are there metric or log gaps, is there a way to debug a specific user's experience?
+5. **Architectural concerns** — fragile queries, tight coupling, defense-in-depth gaps, migration safety, blast radius on failure.
+
+**Why:** A feature request is a description of a desired outcome, not a complete design. A second, systematic perspective catches the blind spots that the operator is too close to see — especially around business-model leaks, operational gaps, and cross-cutting concerns that don't show up in the user story.
+
+**How to apply:**
+- Before implementation: review the design against the five categories and flag concerns. Don't just list them — recommend a specific resolution for each.
+- After implementation: review the code against the same categories; catch what got past the design review.
+- Be direct. Vague concerns like "consider security" are noise; specific concerns like "this endpoint accepts arbitrary JSON into the LLM prompt — that's a prompt-injection vector, gate it behind a schema validator" are actionable.
+- Err toward raising concerns. A flagged concern the operator dismisses as fine is cheap; a missed concern that ships is expensive.

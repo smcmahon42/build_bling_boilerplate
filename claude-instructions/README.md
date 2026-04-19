@@ -13,6 +13,10 @@ Topic files loaded on-demand by Claude during a session. The root `CLAUDE.md` is
 | [commit-conventions.md](commit-conventions.md) | Conventional Commits, scope, PR references, co-author trailers. |
 | [dependency-vetting.md](dependency-vetting.md) | 5-point checklist before adding any dependency. |
 | [component-explainability.md](component-explainability.md) | README at every meaningful boundary. |
+| [agent-primitives.md](agent-primitives.md) | Typed Task/Result/Evidence/Provenance/CapabilityToken — the language of agent-to-agent handoff. |
+| [contract-discipline.md](contract-discipline.md) | OpenAPI / JSON Schema / protobuf as source of truth; versioning; codegen rules. |
+| [logging-practices.md](logging-practices.md) | Structured JSON logs with mandatory correlation fields and redaction. |
+| [observability-practices.md](observability-practices.md) | OpenTelemetry tracing and metrics; `Provenance` as the correlation anchor. |
 | [claude-memory.md](claude-memory.md) | User-local Claude memory system, namespacing, when to save. |
 | [epics-and-projects.md](epics-and-projects.md) | Two patterns for epic tracking: doc-embedded vs GitHub Projects v2. |
 | [scaling-claude-instructions.md](scaling-claude-instructions.md) | How to grow this directory as the project grows (Stage 1 → 2 → 3). |

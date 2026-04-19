@@ -79,3 +79,12 @@ skills:
     scale: [small, medium]
     tools: [Read, Write, Edit, Glob, AskUserQuestion]
     lifecycle: recurring
+
+  - name: new-contract
+    file: new-contract.md
+    description: Scaffold a new contract (OpenAPI, JSON Schema, or protobuf). Picks the form, copies the starter, registers it, and wires codegen.
+    invoke: /new-contract
+    triggers: [architecture, scaffold, api, documentation]
+    scale: [small, medium, large]
+    tools: [Read, Write, Edit, Glob, Bash, AskUserQuestion]
+    lifecycle: recurring

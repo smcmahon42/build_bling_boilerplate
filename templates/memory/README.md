@@ -24,9 +24,17 @@ where `<encoded-project-path>` is your repo's absolute path with `/` replaced by
 | --- | --- |
 | `MEMORY.md` | `~/.claude/projects/<path>/memory/MEMORY.md` (index, always loaded) |
 | `user_role.md.example` | `user_role.md` — who the operator is |
-| `feedback_example.md.example` | `feedback_<topic>.md` — preferences and corrections |
+| `feedback_never_assume.md.example` | `feedback_never_assume.md` — verify before claiming |
+| `feedback_trust_but_verify.md.example` | `feedback_trust_but_verify.md` — questions start with verification |
+| `feedback_completeness_audit.md.example` | `feedback_completeness_audit.md` — audit before declaring done |
+| `feedback_constructive_review.md.example` | `feedback_constructive_review.md` — flag business / security / UX / observability / architecture on every feature |
+| `feedback_explainability_gate.md.example` | `feedback_explainability_gate.md` — READMEs as code-quality signal |
+| `feedback_never_override_ci.md.example` | `feedback_never_override_ci.md` — no CI bypass, ever |
+| `feedback_example.md.example` | `feedback_example.md` — format reference; delete once you have real feedback |
 | `project_context.md.example` | `project_<topic>.md` — project-specific facts |
 | `reference_example.md.example` | `reference_<topic>.md` — pointers to external systems |
+
+The six `feedback_*` seeds are opinionated defaults that apply to any project. Keep them unless you have a deliberate reason to remove one — they encode patterns that save the operator from correcting the same mistake twice.
 
 ## Automated seeding
 

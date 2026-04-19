@@ -1,0 +1,129 @@
+// Minimal proto3 starter for internal agent-to-agent RPC.
+//
+// Mirrors the JSON Schema shape of the agent primitives (templates/agent-primitives/).
+// Replace the package path, service name, and RPC list for your project.
+
+syntax = "proto3";
+
+package example.service.v1;
+
+option go_package = "github.com/{{OWNER}}/{{PROJECT_NAME}}/gen/go/example/service/v1;servicev1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+// ---- Service --------------------------------------------------------------
+
+service ExampleService {
+  // Submit a Task synchronously. Returns one Result.
+  rpc SubmitTask(Task) returns (Result);
+
+  // Submit a Task and stream partial Results. Final message has status OK or ERROR.
+  rpc SubmitTaskStream(Task) returns (stream Result);
+}
+
+// ---- Primitives (mirror of templates/agent-primitives/schemas) ------------
+
+message Task {
+  string task_id = 1;
+  string kind = 2;
+  string version = 3;
+  google.protobuf.Struct inputs = 4;          // kind-specific; validated out-of-band against the kind's input schema
+  google.protobuf.Struct params = 5;
+  string idempotency_key = 6;
+  Budget budget = 7;
+  CapabilityToken capability_token = 8;
+  Provenance provenance = 9;
+}
+
+message Budget {
+  int32 max_tokens = 1;
+  int32 max_wall_seconds = 2;
+  double max_cost_usd = 3;
+}
+
+message Result {
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    OK = 1;
+    PARTIAL = 2;
+    ERROR = 3;
+  }
+
+  string result_id = 1;
+  string task_id = 2;
+  Status status = 3;
+  google.protobuf.Struct output = 4;          // kind-specific; validated out-of-band against the kind's output schema
+  Error error = 5;
+  double confidence = 6;
+  repeated Evidence evidence = 7;
+  Metrics metrics = 8;
+  Provenance provenance = 9;
+}
+
+message Error {
+  string code = 1;                            // dotted string, e.g. "budget.exceeded"
+  string message = 2;
+  bool retryable = 3;
+  google.protobuf.Struct details = 4;
+}
+
+message Metrics {
+  int32 tokens_in = 1;
+  int32 tokens_out = 2;
+  double wall_seconds = 3;
+  double cost_usd = 4;
+}
+
+message Evidence {
+  enum SourceKind {
+    SOURCE_KIND_UNSPECIFIED = 0;
+    DOCUMENT = 1;
+    URL = 2;
+    TOOL_OUTPUT = 3;
+    MEMORY = 4;
+    HUMAN_INPUT = 5;
+  }
+
+  string claim = 1;
+  Source source = 2;
+  double confidence = 3;
+
+  message Source {
+    SourceKind kind = 1;
+    string id = 2;
+    string range = 3;
+  }
+}
+
+message Provenance {
+  Producer produced_by = 1;
+  google.protobuf.Timestamp produced_at = 2;
+  string step_id = 3;
+  string parent_step_id = 4;
+  string trace_id = 5;
+  repeated string inputs = 6;                  // content-addressed ids of consumed inputs
+  int32 ring = 7;
+
+  message Producer {
+    string agent_id = 1;
+    string model = 2;                          // omit for deterministic tools
+    string tool = 3;                           // omit for LLM producers
+  }
+}
+
+message CapabilityToken {
+  string token_id = 1;
+  string issuer = 2;
+  string subject = 3;
+  repeated Capability capabilities = 4;
+  google.protobuf.Timestamp expires_at = 5;
+  string attenuated_from = 6;
+  string nonce = 7;
+  string signature = 8;
+
+  message Capability {
+    string action = 1;                          // "verb.resource" dotted
+    google.protobuf.Struct scope = 2;
+  }
+}

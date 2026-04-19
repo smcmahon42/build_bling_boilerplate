@@ -14,6 +14,7 @@ The machine-readable index lives in [`skills-index.yaml`](skills-index.yaml) —
 | [test-gaps](test-gaps.md) | `/test-gaps` | Before a release, when coverage drops, or when you suspect critical-path tests are missing. |
 | [new-adr](new-adr.md) | `/new-adr` | Recording an architectural decision (new boundary, new tech, changed auth/data/observability surface). |
 | [new-skill](new-skill.md) | `/new-skill` | Authoring a new skill to add to this directory. |
+| [new-contract](new-contract.md) | `/new-contract` | Adding a new contract (OpenAPI / JSON Schema / protobuf). Picks the form, copies the starter, registers and wires codegen. |
 
 ## How to pick a skill
 

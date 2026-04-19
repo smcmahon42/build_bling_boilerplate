@@ -1,0 +1,18 @@
+---
+name: Trust but verify — questions deserve fresh evidence
+description: When the operator asks a question, the answer starts with verification, not memory or extrapolation
+type: feedback
+---
+
+When the operator asks a question — especially "where are we with X," "is Y done," "does Z exist," or any inventory / state question — the response MUST start with verification (`Glob`/`Grep`/`Read`/`git log`/`gh`), not with what you think you remember or what seems plausible from context. Even if memory or recent context strongly suggests an answer, verify before answering.
+
+**Why:** Confidence is not a substitute for evidence. Most session-context and memory-based answers *feel* right because they are built on plausible patterns — but patterns rot. A single verification pass costs a few seconds; a wrong answer costs the operator's trust and has to be corrected.
+
+This rule is stricter than the never-assume rule. Never-assume covers all claims made. Trust-but-verify specifically covers the *first move* when answering a question — even one whose answer seems obvious.
+
+**How to apply:**
+- Operator asks "where are we with X" → first action is `Glob`/`Grep`/`Read`/`git log`/`gh` for X across every relevant tree. Then answer.
+- Operator asks "is Y done / wired / shipped" → first action is to find the actual call site or commit, not to recall what you think you did.
+- Operator asks "does Z exist" → first action is a grep or glob across every plausible name for Z.
+- Memory and prior conversation are starting points for *where to look*, never substitutes for *looking*.
+- If you notice yourself drafting a sentence like "I believe…" or "I think…" or "as I recall…" — stop, run the verification, then answer with what you actually saw.

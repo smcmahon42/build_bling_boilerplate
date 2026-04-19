@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.com/kinds/summarize.thread/1.0.0/output.schema.json",
+  "title": "summarize.thread output (v1.0.0)",
+  "description": "Example output schema for a task kind. Plugs into Result.output when Task.kind == 'summarize.thread'. Notice: free text lives under a named field ('summary') alongside structured siblings ('key_points', 'participants'). Evidence anchoring is carried at the Result level, not here.",
+  "type": "object",
+  "required": ["summary"],
+  "additionalProperties": false,
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "Natural-language summary. Free text lives HERE, not as the Result itself."
+    },
+    "key_points": {
+      "type": "array",
+      "description": "Structured takeaways. Downstream agents read these without parsing prose.",
+      "items": {
+        "type": "object",
+        "required": ["point"],
+        "additionalProperties": false,
+        "properties": {
+          "point": { "type": "string" },
+          "importance": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "role": { "type": "string" }
+        }
+      }
+    },
+    "message_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of messages considered. Lets a consumer detect when 'since' trimmed more than expected."
+    }
+  }
+}

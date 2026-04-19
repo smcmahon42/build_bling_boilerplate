@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.com/agent-primitives/task.schema.json",
+  "title": "Task",
+  "description": "A typed unit of work handed to an agent. The canonical object of handoff between rings. A prompt is a *rendering* of a Task for an LLM; it is not the Task itself.",
+  "type": "object",
+  "required": ["task_id", "kind", "inputs", "provenance", "idempotency_key"],
+  "additionalProperties": false,
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Content-addressed id: hash(kind, version, inputs, params). Identical Tasks produce identical task_ids — this is what makes caching work."
+    },
+    "kind": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
+      "description": "Dotted kind registered in the task catalog (e.g., 'summarize.thread', 'classify.intent'). Each kind defines its own input/output schemas."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semver of the kind's schema. Bump major on breaking changes."
+    },
+    "inputs": {
+      "type": "object",
+      "description": "Kind-specific input payload. MUST validate against the kind's input schema at the declared version."
+    },
+    "params": {
+      "type": "object",
+      "description": "Non-input knobs that influence production but are not semantic inputs (style, length, thresholds, sampling temperature)."
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Stable key that dedupes retries. Typically equals task_id; may differ when the caller wants to force fresh work despite identical inputs."
+    },
+    "budget": {
+      "type": "object",
+      "description": "Hard ceilings the producer must honor. Exceeding any triggers a 'budget.exceeded' error Result, not a silent continuation.",
+      "additionalProperties": false,
+      "properties": {
+        "max_tokens": { "type": "integer", "minimum": 1 },
+        "max_wall_seconds": { "type": "integer", "minimum": 1 },
+        "max_cost_usd": { "type": "number", "minimum": 0 }
+      }
+    },
+    "capability_token": {
+      "$ref": "capability-token.schema.json",
+      "description": "Scoped authority the producer may exercise. Producers MUST attenuate before delegating further."
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json",
+      "description": "Who produced this Task (the caller) and with what context. Downstream agents rely on this to decide trust."
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.com/agent-primitives/evidence.schema.json",
+  "title": "Evidence",
+  "description": "A claim made by an agent, anchored to a source. Turns prose assertions into verifiable, trainable records.",
+  "type": "object",
+  "required": ["claim", "source"],
+  "additionalProperties": false,
+  "properties": {
+    "claim": {
+      "type": "string",
+      "description": "The assertion being supported. Short and self-contained."
+    },
+    "source": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": ["document", "url", "tool_output", "memory", "human_input"],
+          "description": "Category of source. Consumers may weight these differently."
+        },
+        "id": {
+          "type": "string",
+          "description": "Content-addressed id (preferred) or stable locator for the source."
+        },
+        "range": {
+          "type": "string",
+          "description": "Optional span within the source (e.g., 'p3', 'lines 42-57', 'offset=1024,len=256')."
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence that 'source' actually supports 'claim'."
+    }
+  }
+}

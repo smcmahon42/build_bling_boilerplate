@@ -1,0 +1,16 @@
+---
+name: Completeness audit before declaring done
+description: Audit shipped work against the spec (migration, handler, route, test, client, UI, docs) before claiming completion
+type: feedback
+---
+
+After completing a multi-step task or multi-issue epic, do a structured self-audit before declaring it done. Cross-check every deliverable in the spec against what was actually shipped.
+
+**Why:** It is easy to lose track of a back-end piece, a client method, a route, a test, a doc, or a sidebar entry while focusing on the bulk of the work. Declaring "done" prematurely forces the operator to ask "anything else?" to trigger the gap check — which wastes their attention and erodes trust.
+
+**How to apply:**
+- After each issue: re-read the issue body, check every deliverable category against what shipped (migration, storage, handler, route, test, API client method, UI surface, docs, ADR if needed, sidebar or nav entry).
+- After each epic: do a full sweep — grep for `TODO` comments, check every new endpoint has a matching client method, every new page has a route and nav entry, every handler has tests.
+- Never say "all done" without first running the structured checklist.
+- Proactively flag gaps you find, rather than waiting for the operator to ask.
+- If a deliverable was intentionally skipped, say so explicitly with the reason — don't let it look like an oversight.
