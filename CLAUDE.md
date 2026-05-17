@@ -54,6 +54,7 @@ For destructive actions (deletions, force-pushes, production writes, external me
 | An architectural decision | `docs/decisions/README.md` |
 | Planning an epic or filing issues | `claude-instructions/epics-and-projects.md` |
 | Writing or editing Claude memory | `claude-instructions/claude-memory.md` |
+| Starting or ending a work session (read or update `STATE.md`) | `claude-instructions/session-handoff.md` |
 | Splitting CLAUDE.md as the project grows | `claude-instructions/scaling-claude-instructions.md` |
 | Writing or organizing docs | `claude-instructions/documentation-discipline.md` |
 

@@ -15,6 +15,8 @@ The machine-readable index lives in [`skills-index.yaml`](skills-index.yaml) —
 | [new-adr](new-adr.md) | `/new-adr` | Recording an architectural decision (new boundary, new tech, changed auth/data/observability surface). |
 | [new-skill](new-skill.md) | `/new-skill` | Authoring a new skill to add to this directory. |
 | [new-contract](new-contract.md) | `/new-contract` | Adding a new contract (OpenAPI / JSON Schema / protobuf). Picks the form, copies the starter, registers and wires codegen. |
+| [start-session](start-session.md) | `/start-session` | Top of a non-trivial work session. Reads `STATE.md`, surfaces blocked / in-progress items, asks for direction. |
+| [end-session](end-session.md) | `/end-session` | Closing a non-trivial work session. Reconciles `STATE.md` against what actually happened and commits the update. |
 
 ## How to pick a skill
 

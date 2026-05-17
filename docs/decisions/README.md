@@ -15,6 +15,7 @@ See [0001](0001-record-architecture-decisions.md) for why this project uses ADRs
 | [0005](0005-structured-logging-and-redaction.md) | Structured JSON logs with mandatory correlation fields and a redaction layer | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
 | [0006](0006-human-surfaces-are-views-over-contracts.md) | Human surfaces are thin views over contracts, never the other way around | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
 | [0007](0007-opentelemetry-and-correlation.md) | OpenTelemetry for tracing and metrics, with Provenance as the correlation anchor | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
+| [0008](0008-session-handoff-state.md) | Project-local session-handoff state via STATE.md | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
 
 <!--
 Add new rows here in number order. When a new ADR supersedes an old one, keep both rows and update the old row's Status to "Superseded by NNNN".

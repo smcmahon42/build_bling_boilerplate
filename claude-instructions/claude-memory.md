@@ -111,6 +111,20 @@ No frontmatter on `MEMORY.md` itself — it's an index, not a memory.
 - **Git history or recent changes** — `git log` is authoritative.
 - **Debugging recipes** — the fix is in the code; the commit message holds the context.
 - **Transient task state** — use Claude's task tracker, not memory.
+- **Project-local session handoff** — what's open, in-progress, blocked, tabled, or recently completed lives in the repo's `STATE.md`, not in user-local memory. See [`session-handoff.md`](session-handoff.md).
+
+## Memory vs project state
+
+User-local memory and project-local `STATE.md` solve different problems and live in different places. The boundary matters: putting operational state in user-local memory breaks cross-contributor legibility (other operators can't read your local `~/.claude/`), and putting biographical context in `STATE.md` leaks operator preferences into the committed repo.
+
+| Concern | Lives in | Lifecycle | Audience |
+| --- | --- | --- | --- |
+| Who I am, how I work, what I already know | `~/.claude/projects/<path>/memory/` (user-local) | Slow-moving; updated as preferences evolve | This operator only |
+| Time-bound project facts (deadlines, stakeholders) | Same — user-local memory, type `project` | Decays as project changes | This operator only |
+| What's open / in-progress / blocked / tabled right now | Repo root `STATE.md` (committed) | Updated every `/end-session` | Every contributor and agent |
+| Accepted architectural decisions | `docs/decisions/` (committed) | Append-only | Every contributor and agent |
+
+When in doubt: if the next contributor on first clone needs to see it, it belongs in the repo (STATE.md or an ADR). If only you need it, it belongs in user-local memory.
 
 ## Seeding memory for a new project
 
