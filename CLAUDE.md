@@ -35,7 +35,7 @@ Each task follows the same loop. These aren't aspirational — they're the defau
 7. **Document.** Update the matching doc bucket in the same change (ADR, README, runbook).
 8. **Commit.** Conventional Commits. One logical unit per commit. See [`claude-instructions/commit-conventions.md`](claude-instructions/commit-conventions.md).
 
-For destructive actions (deletions, force-pushes, production writes, external messages, schema drops), stop and confirm before acting — even inside a larger approved plan.
+For destructive actions (deletions, force-pushes, production writes, external messages, schema drops), stop and confirm before acting — even inside a larger approved plan. The full doctrine of what an agent can do autonomously vs what requires operator confirmation lives in `claude-instructions/agent-autonomy.md` (four levels: autonomous, autonomous-on-branch, propose-and-confirm, human-only).
 
 ## When you're about to work on…
 
@@ -55,6 +55,7 @@ For destructive actions (deletions, force-pushes, production writes, external me
 | Planning an epic or filing issues | `claude-instructions/epics-and-projects.md` |
 | Writing or editing Claude memory | `claude-instructions/claude-memory.md` |
 | Starting or ending a work session (read or update `STATE.md`) | `claude-instructions/session-handoff.md` |
+| Deciding whether an action is agent-autonomous or needs operator confirmation | `claude-instructions/agent-autonomy.md` |
 | Splitting CLAUDE.md as the project grows | `claude-instructions/scaling-claude-instructions.md` |
 | Writing or organizing docs | `claude-instructions/documentation-discipline.md` |
 
