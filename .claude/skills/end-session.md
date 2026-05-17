@@ -28,19 +28,33 @@ for the doctrine and the STATE.md schema.
    - `Completed at: YYYY-MM-DD`
    - `Session summary:` one sentence — what changed.
    - `Commit / PR:` link if useful.
+   - `Review at completion:` `confirmed (by operator)` if the operator
+     directly confirmed the work, or `self-completed (agent, under operator
+     direction)` if the agent landed it under earlier direction without an
+     explicit final review.
 3. **Update last-touched dates** on items that were worked on but not
    completed. State transitions (`pending → in-progress`, `→ blocked`)
    happen here too.
 4. **Capture new items** that came up during the session. Add them to
-   *Open work items* with `State: pending`.
-5. **Mark tabled items.** Anything the operator explicitly parked moves to
-   *Tabled* with `Why tabled` and `Un-table when`.
-6. **Record open questions** raised during the session — typically asks to
-   the operator that didn't get answered.
-7. **Age out** entries in *Recently completed* that exceed the rolling
+   *Open work items* with `State: pending`. Set `Review` per the defaults:
+   - **`confirmed`** if the operator directed the entry's creation.
+   - **`unreviewed`** if the agent added it from its own observation
+     (e.g., spotted a gap while doing other work). Include a `Provenance`
+     block so the operator can ground their later review.
+5. **Update Review transitions** for any unreviewed entries the operator
+   acted on during the session (`unreviewed → confirmed | rejected | stale`).
+   Don't infer the operator's review from silence — only update Review when
+   they actually said.
+6. **Mark tabled items.** Anything the operator explicitly parked moves to
+   *Tabled* with `Why tabled`, `Un-table when`, and a carried-forward
+   `Review` field.
+7. **Record open questions** raised during the session — typically asks to
+   the operator that didn't get answered. Include a `Provenance` block for
+   agent-asked questions.
+8. **Age out** entries in *Recently completed* that exceed the rolling
    window (~10 entries or 14 days). Don't delete history — git keeps it;
    STATE.md stays scannable.
-8. **Commit.** Conventional Commits:
+9. **Commit.** Conventional Commits:
    `docs(state): update STATE.md — <one-line session summary>`. Stage only
    `STATE.md` — this skill doesn't touch code.
 
@@ -69,6 +83,11 @@ Commit staged: docs(state): update STATE.md — finished rate-limit middleware
   belong to the same logical unit (rare). Mixing them muddies `git log`.
 - **Ask the operator before deleting an item outright.** Tabling is the
   default for "not doing this right now."
+- **Never set `Review: confirmed` on an agent-authored entry without an
+  explicit operator turn confirming it.** Silence is not consent. Default
+  to `unreviewed` and let the next `/start-session` surface it.
+- **Always include a `Provenance` block on agent-authored entries** added
+  this session. Skill name and session id alone usually suffice.
 
 ## Related
 

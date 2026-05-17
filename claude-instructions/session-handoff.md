@@ -41,23 +41,94 @@ project root on bootstrap and treat it as living history.
   GitHub Issues or Linear can mirror, but STATE.md stays the local source
   of truth that any agent or contributor can read on first clone.
 
+## Provenance and review state
+
+STATE.md entries can be authored by either the human operator or by an agent,
+and the boilerplate treats those two cases differently. Agent-authored
+content starts as *evidence*, not *instruction* — the operator alone confers
+authority by reviewing.
+
+### Authorship
+
+The `Opened by` field on each entry distinguishes:
+
+- **Human name** (e.g. `Sean`) — operator directly authored the entry.
+- **`agent`** — an agent created the entry, either while doing work the
+  operator directed or because the agent noticed something during a session.
+
+### Review state machine
+
+Every entry carries a `Review` field with one of five values:
+
+| Value | Meaning | Set by |
+| --- | --- | --- |
+| `unreviewed` | Agent-authored, not yet seen or accepted by the operator | Agent (default for new agent entries) |
+| `confirmed` | Operator has reviewed and accepts the entry as direction | Operator only |
+| `rejected` | Operator has reviewed and declined the entry | Operator only |
+| `stale` | No longer relevant but kept for record | Operator (or agent, with operator confirmation) |
+| `superseded` | Replaced by a newer entry; the new entry's id goes in `Notes` | Agent or operator |
+
+Defaults:
+
+- **Human-authored entries** start as `Review: confirmed`. The operator
+  authoring something *is* the confirmation.
+- **Agent-authored entries** start as `Review: unreviewed` unless the agent
+  is acting under explicit operator direction on this entry (in which case
+  `confirmed` is appropriate — the direction is the confirmation).
+
+Authority rules:
+
+- **Only the operator transitions to/from `confirmed` or `rejected`** on
+  entries the agent didn't author. This is the line between evidence and
+  instruction.
+- **The agent may mark its own entries `superseded`** when it writes a
+  replacement entry — but the replacement still starts `unreviewed` if it
+  wasn't operator-directed.
+- **The agent may not silently flip `unreviewed → confirmed`** on its own
+  entries. That promotion is the operator's act.
+
+### Provenance fields
+
+Optional but strongly encouraged for any agent-authored entry. The block:
+
+```
+- **Provenance:**
+  - **Skill:** <skill name, e.g. `/security-review`, or `manual`>
+  - **Session:** <session id, e.g. `2026-05-17-001`>
+  - **Prompt summary:** <one line — what the operator asked when this came up>
+  - **Context:** <file:line refs or related entry slugs>
+```
+
+The point isn't audit-grade signing — it's helping future agents and
+operators answer "why is this here?" without re-reading the whole repo.
+Skill name and session id alone usually carry most of the value; prompt
+summary and context add detail when the entry's origin is non-obvious.
+
 ## Lifecycle
 
 1. **A new item appears** in *Open work items* when the operator (human or
    agent) starts on something or queues it for later. Use a short slug as
-   the heading (e.g. `### add-rate-limit-middleware`).
+   the heading (e.g. `### add-rate-limit-middleware`). `Review` is set per
+   the defaults above.
 2. **State transitions** happen in place — `pending → in-progress` when
    work starts; `→ blocked` when something stops progress and the reason is
    non-trivial.
-3. **On completion** the item moves to *Recently completed* with a
+3. **Review transitions** happen when the operator reviews an unreviewed
+   entry: `unreviewed → confirmed | rejected | stale`. Record the date in
+   `Notes` if useful (`reviewed 2026-05-17`).
+4. **On completion** the item moves to *Recently completed* with a
    one-sentence session summary and (optionally) a commit/PR link. The
    original entry is removed from *Open work items* in the same commit.
-4. **On tabling** the item moves to *Tabled* with `Why tabled` and
-   `Un-table when`.
-5. ***Recently completed* ages out** at the next `/end-session` after an
+   Record `Review at completion` so future readers see whether the operator
+   confirmed the work or whether the agent completed it under earlier
+   direction.
+5. **On tabling** the item moves to *Tabled* with `Why tabled` and
+   `Un-table when`. The `Review` field carries forward (`stale`,
+   `rejected`, or `tabled-only` when neither applies).
+6. ***Recently completed* ages out** at the next `/end-session` after an
    entry exceeds the rolling window. Git history retains everything; STATE.md
    stays scannable.
-6. **Open questions** resolve into open work items when the answer changes
+7. **Open questions** resolve into open work items when the answer changes
    what should happen next, or get removed if the answer is simply "no,
    don't do that."
 
