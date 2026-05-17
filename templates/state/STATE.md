@@ -21,11 +21,23 @@ One entry per open work item. Schema:
 ### <slug-id>
 - **Summary:** <one line>
 - **State:** pending | in-progress | blocked
-- **Opened by:** <human or agent name>
+- **Review:** unreviewed | confirmed | rejected | stale | superseded
+- **Opened by:** <human name or `agent`>
 - **Opened at:** YYYY-MM-DD
 - **Last touched:** YYYY-MM-DD
 - **Next step:** <one line — what unblocks progress>
+- **Provenance:** (optional but encouraged for agent-authored entries)
+  - **Skill:** <skill that produced this entry, if any>
+  - **Session:** <session id or YYYY-MM-DD-<seq>>
+  - **Prompt summary:** <one line — what the operator asked when this came up>
+  - **Context:** <file:line refs or related entries>
 - **Notes:** <optional; keep short>
+
+Review defaults: `confirmed` for human-authored entries, `unreviewed` for
+agent-authored entries (entries the agent added without explicit operator
+direction). The operator alone transitions Review to/from confirmed and
+rejected. Agents may mark their own entries `superseded` (pointing at the
+replacement) or update Provenance.
 
 Remove the entry once it lands in "Recently completed".
 -->
@@ -43,6 +55,7 @@ Older entries age out (git history retains everything). Schema:
 - **Completed at:** YYYY-MM-DD
 - **Session summary:** <one sentence — what changed>
 - **Commit / PR:** <link if useful>
+- **Review at completion:** confirmed (by operator) | self-completed (agent, under operator direction)
 -->
 
 <!-- (none yet) -->
@@ -58,6 +71,7 @@ the record that the trade-off was considered. Schema:
 - **Tabled at:** YYYY-MM-DD
 - **Why tabled:** <one sentence — the reason>
 - **Un-table when:** <one sentence — what changes to bring it back>
+- **Review:** stale | rejected | tabled-only
 -->
 
 <!-- (none yet) -->
@@ -73,6 +87,10 @@ into an open work item or gets removed once answered. Schema:
 - **Asked at:** YYYY-MM-DD
 - **Asked by:** <agent or human>
 - **Waiting on:** <who or what>
+- **Provenance:** (optional)
+  - **Skill:** <skill that produced the question>
+  - **Session:** <session id>
+  - **Context:** <file:line refs>
 -->
 
 <!-- (none yet) -->
