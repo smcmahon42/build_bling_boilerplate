@@ -9,7 +9,7 @@ Run this before wrapping up any non-trivial work session. It reconciles
 `STATE.md` against what actually happened, so the next session starts from
 accurate ground state.
 
-See [`../../claude-instructions/session-handoff.md`](../../claude-instructions/session-handoff.md)
+See [`../../agent-instructions/session-handoff.md`](../../agent-instructions/session-handoff.md)
 for the doctrine and the STATE.md schema.
 
 ## Pre-flight
@@ -54,7 +54,7 @@ for the doctrine and the STATE.md schema.
 8. **Record cost signals** on multi-session entries (entries that have
    been touched in more than one session, including this one). Update
    the `Cost signals` block per
-   [`../../claude-instructions/agent-cost-observability.md`](../../claude-instructions/agent-cost-observability.md):
+   [`../../agent-instructions/agent-cost-observability.md`](../../agent-instructions/agent-cost-observability.md):
    - Increment `Sessions to date`.
    - Append any new skills invoked to `Skills used (cumulative)`,
      de-duplicated.
@@ -105,7 +105,7 @@ Commit staged: docs(state): update STATE.md — finished rate-limit middleware
 
 ## Related
 
-- [`../../claude-instructions/session-handoff.md`](../../claude-instructions/session-handoff.md) — doctrine and schema.
-- [`../../claude-instructions/agent-cost-observability.md`](../../claude-instructions/agent-cost-observability.md) — `Cost signals` schema and external-tooling composition.
+- [`../../agent-instructions/session-handoff.md`](../../agent-instructions/session-handoff.md) — doctrine and schema.
+- [`../../agent-instructions/agent-cost-observability.md`](../../agent-instructions/agent-cost-observability.md) — `Cost signals` schema and external-tooling composition.
 - [`start-session.md`](start-session.md) — the paired opening skill.
-- [`../../claude-instructions/commit-conventions.md`](../../claude-instructions/commit-conventions.md) — commit message format.
+- [`../../agent-instructions/commit-conventions.md`](../../agent-instructions/commit-conventions.md) — commit message format.

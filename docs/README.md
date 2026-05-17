@@ -12,6 +12,7 @@ Project documentation lives under this directory. The structure is intentional �
 | security/ | (create on first use) Threat models, security posture, audit logs. |
 | qa/ | (create on first use) Test strategy, test plans, fixtures. |
 | guides/ | (create on first use) Long-form internal docs and how-tos. |
+| agent-clients/ | Agent-client adapter strategy for Claude, Codex, hybrid, and homegrown workflows. |
 | api/ | (create on first use) Narrative supplementing generated API references. |
 | roadmap/ | (create on first use) Product/engineering roadmap and historical phases. |
 | archive/ | (create on first use) Retired docs kept for history. Move rather than delete. |
@@ -22,7 +23,7 @@ Directories marked "create on first use" don't exist yet — add them when you h
 
 - **Every new doc goes in a bucket.** If it doesn't fit, propose a new bucket (ADR-worthy decision).
 - **Each bucket has a `README.md`** that indexes its contents.
-- **Every change ships docs.** See [claude-instructions/documentation-discipline.md](../claude-instructions/documentation-discipline.md).
+- **Every change ships docs.** See [agent-instructions/documentation-discipline.md](../agent-instructions/documentation-discipline.md).
 - **Archive, don't delete.** When a doc is retired, move to `archive/<year>/` with a note at the top.
 
 ## ADR quick links
@@ -33,5 +34,5 @@ Directories marked "create on first use" don't exist yet — add them when you h
 
 ## See also
 
-- `claude-instructions/documentation-discipline.md` — doc routing rules.
-- `claude-instructions/component-explainability.md` — the module-README rule.
+- `agent-instructions/documentation-discipline.md` — doc routing rules.
+- `agent-instructions/component-explainability.md` — the module-README rule.

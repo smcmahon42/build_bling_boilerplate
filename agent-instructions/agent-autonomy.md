@@ -15,13 +15,13 @@ direction.
 | Level | Operator role | Examples |
 | --- | --- | --- |
 | **L1 — Autonomous** | None. Agent acts. | Read files, run linters, `git status`/`diff`/`log`, `gh pr view` |
-| **L2 — Autonomous on feature branch; propose-first on medium/large tasks** | Plan-review before edits start; otherwise none. | Edit code on a feature branch, commit, run `/end-session` |
-| **L3 — Propose-and-confirm** | Reviews the proposed action and explicitly approves before agent proceeds. | Merge to main, push, modify CI / settings.json, modify CLAUDE.md house rules, accept ADRs |
+| **L2 — Autonomous on feature branch; propose-first on medium/large tasks** | Plan-review before edits start; otherwise none. | Edit code on a feature branch, prepare commits, update `STATE.md` |
+| **L3 — Propose-and-confirm** | Reviews the proposed action and explicitly approves before agent proceeds. | Merge to main, push, modify CI / agent settings, modify `AGENTS.md` house rules, accept ADRs |
 | **L4 — Human-only** | Agent never performs; refers the operation back. | Push to main without PR, force-push to main, repo settings, external messages, financial / production / infra actions |
 
 The split between L2 and L3 maps onto the existing task-scale matrix
-(see `development-workflow.md#task-scale-matrix`) and house rule 3 of
-`CLAUDE.md`: medium and large tasks share the plan before editing. Small
+(see `development-workflow.md#task-scale-matrix`) and `AGENTS.md`:
+medium and large tasks share the plan before editing. Small
 tasks are L2-autonomous; medium/large are L2-propose-then-act on the plan.
 
 ## L1 — Autonomous (read & inspect)
@@ -36,27 +36,27 @@ The agent performs these without asking. They are reversible and cheap.
 - `ls`, `find`, `grep`, `pwd`, `which` — read-only inspection.
 - Run linters, type checkers, test runners (deterministic, no side
   effects).
-- Read from user-local Claude memory at
-  `~/.claude/projects/<path>/memory/`.
+- Read from client-local operator memory if the active agent client exposes it.
 - Run `pre-commit run` (no-op on clean trees; only shows what would
   change).
 
-These are the operations on the `.claude/settings.json` allowlist today.
-The allowlist *is* the enforcement layer for this level.
+Client-specific adapters may enforce this level with permission allowlists
+or sandbox policies. The doctrine here is the source of truth; adapter
+settings are enforcement details.
 
 ## L2 — Autonomous on feature branch; plan-first on medium/large
 
-The agent edits, scaffolds, and commits on a feature branch. House rule 3
-applies: medium and large tasks share the plan (what files, what shape,
-what tests) before editing starts. Small tasks proceed directly.
+The agent edits and scaffolds on a feature branch. Medium and large tasks
+share the plan (what files, what shape, what tests) before editing starts.
+Small tasks proceed directly.
 
 - Edit code files on a feature branch.
-- Add new files in `templates/`, `claude-instructions/`, `.claude/skills/`,
+- Add new files in `templates/`, `agent-instructions/`, client adapters,
   `docs/`, etc.
-- Run skills that include their own "ask first" gates (`/new-adr`,
-  `/new-skill`, `/new-contract`).
-- Make Conventional Commits on the feature branch.
-- Update STATE.md via `/end-session`. Agent-authored entries default to
+- Run workflows that include their own "ask first" gates.
+- Prepare Conventional Commits on the feature branch; actually committing
+  depends on the active adapter and operator direction.
+- Update STATE.md through the active session-handoff workflow. Agent-authored entries default to
   `Review: unreviewed`; operator-directed ones to `Review: confirmed`
   (per `session-handoff.md`).
 - Run pre-commit hooks that may modify formatting / fix lint.
@@ -72,10 +72,12 @@ approval by silence" is not allowed.
 
 - **Merge a feature branch into main.** Show the merge plan; confirm.
 - **Push to origin** (any branch).
-- **Modify `.claude/settings.json`.** Permissions affect the agent's own
-  capabilities — never silent edits.
-- **Modify `CLAUDE.md` house rules or process checkpoints.** Doctrine
+- **Modify agent-client permission settings.** Permissions affect the
+  agent's own capabilities — never silent edits.
+- **Modify `AGENTS.md` house rules or process checkpoints.** Doctrine
   changes require explicit confirmation.
+- **Modify client adapter shims** (`CLAUDE.md`, future Codex plugin config,
+  homegrown adapter manifests) when those changes alter agent behavior.
 - **Flip an ADR from Proposed to Accepted.** Acceptance is operator's act.
 - **Modify or supersede an existing Accepted ADR.** Write a superseding
   ADR; do not edit the original.
@@ -85,7 +87,7 @@ approval by silence" is not allowed.
 - **Modify `.gitignore`.** Adding entries can mask real problems.
 - **Modify the project license or `CODE_OF_CONDUCT.md`** — these are legal
   and community artifacts; never silent edits.
-- **Modify the skill review criteria** in `.claude/skills/references/`.
+- **Modify workflow/skill review criteria** in client adapter directories.
 
 The proposal pattern: agent presents (a) the change as a unified diff or
 file write preview, (b) the rationale, (c) the alternatives considered.
@@ -148,12 +150,12 @@ reverse only requires updating this file.
 
 ## Related
 
-- `CLAUDE.md` house rule 3 — process checkpoints, including the
-  share-plan-before-editing requirement that L2 inherits.
-- `claude-instructions/development-workflow.md` — the task-scale matrix
+- `AGENTS.md` — process checkpoints, including the share-plan-before-editing
+  requirement that L2 inherits.
+- `agent-instructions/development-workflow.md` — the task-scale matrix
   that distinguishes small from medium/large.
-- `claude-instructions/session-handoff.md` — STATE.md authorship and
+- `agent-instructions/session-handoff.md` — STATE.md authorship and
   Review rules that interact with L2 mutations.
-- `.claude/settings.json` — the L1 enforcement allowlist.
+- Client adapter settings — optional enforcement allowlists.
 - `docs/decisions/0010-agent-autonomy-scope.md` — the architectural
   decision proposing this doctrine.

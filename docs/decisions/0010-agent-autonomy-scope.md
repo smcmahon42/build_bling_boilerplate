@@ -3,7 +3,7 @@
 - **Status:** Accepted (pattern)
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0008](0008-session-handoff-state.md); [0009](0009-provenance-and-review-state-on-state-rows.md); `claude-instructions/agent-autonomy.md`; `CLAUDE.md`
+- **Related:** [0008](0008-session-handoff-state.md); [0009](0009-provenance-and-review-state-on-state-rows.md); `agent-instructions/agent-autonomy.md`; `CLAUDE.md`
 
 ## Context
 
@@ -24,7 +24,7 @@ Today the doctrine that governs these distinctions is scattered:
   there's no corresponding doctrine that explains *why* those particular
   commands are on the list or what should be on the list as the project
   grows.
-- **`claude-instructions/development-workflow.md` task-scale matrix**
+- **`agent-instructions/development-workflow.md` task-scale matrix**
   governs "share the plan before editing" for medium/large tasks. That
   is autonomy guidance, but framed as a scale concern rather than a
   capability concern.
@@ -45,7 +45,7 @@ already lives.
 
 **Every action an agent can perform falls into exactly one of four
 autonomy levels, documented in
-`claude-instructions/agent-autonomy.md`.**
+`agent-instructions/agent-autonomy.md`.**
 
 | Level | Operator role | Containment boundary |
 | --- | --- | --- |
@@ -134,10 +134,10 @@ Rules:
 
 ## See also
 
-- `claude-instructions/agent-autonomy.md` — the operating doctrine.
+- `agent-instructions/agent-autonomy.md` — the operating doctrine.
 - `CLAUDE.md` — house rule 3 (process checkpoints), updated in this
   slice to reference the new topic file.
-- `claude-instructions/development-workflow.md` — task-scale matrix
+- `agent-instructions/development-workflow.md` — task-scale matrix
   the L2 boundary inherits from.
 - `.claude/settings.json` — the L1 enforcement allowlist.
 - [0008](0008-session-handoff-state.md), [0009](0009-provenance-and-review-state-on-state-rows.md)

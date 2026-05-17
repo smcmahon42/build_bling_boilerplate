@@ -13,7 +13,7 @@
 | Security finding, threat model | `docs/security/` |
 | QA plan, test strategy | `docs/qa/` |
 | API surface change | auto-generated from source (OpenAPI, GraphQL schema, etc.) + `docs/api/` narrative |
-| Claude-facing instruction update | `claude-instructions/*.md` or `<module>/claude-instructions/*.md` |
+| Agent-facing instruction update | `agent-instructions/*.md` or `<module>/agent-instructions/*.md` |
 | User-visible behavior change | `CHANGELOG.md` (if the project ships versioned releases) |
 
 If a change doesn't fit any bucket, it probably doesn't need doc — but ask: would a new teammate wonder why this exists in six months? If yes, doc it somewhere.
@@ -33,10 +33,10 @@ If a change doesn't fit any bucket, it probably doesn't need doc — but ask: wo
 - 20–40 lines. Plain English.
 - Four questions: What is this? Why is it separate? How does it connect? Who maintains it?
 
-**Claude instructions:**
+**Agent instructions:**
 - Action-oriented, not background theory.
 - Scannable — tables, checklists, short sections.
-- See [scaling-claude-instructions.md](scaling-claude-instructions.md) for structure.
+- See [scaling-agent-instructions.md](scaling-agent-instructions.md) for structure.
 
 ## Index discipline
 
@@ -55,5 +55,5 @@ Docs rot. When a practice changes or a system is retired, either update the doc 
 
 ## Related
 
-- [scaling-claude-instructions.md](scaling-claude-instructions.md) — the parallel scaling pattern for `CLAUDE.md`.
+- [scaling-agent-instructions.md](scaling-agent-instructions.md) — the parallel scaling pattern for `AGENTS.md`.
 - [component-explainability.md](component-explainability.md) — the module-README rule in detail.

@@ -15,7 +15,7 @@ Before creating a new skill, confirm all three:
 2. **No overlap** — no existing skill in `skills-index.yaml` already covers this.
 3. **Adds structure** — the skill provides invariants, ordered steps, or mandated checks that a bare prompt wouldn't.
 
-If any fail, stop and reconsider. Often the right answer is *updating an existing skill* or adding a topic file to `claude-instructions/`.
+If any fail, stop and reconsider. Often the right answer is *updating an existing skill* or adding a topic file to `agent-instructions/`.
 
 ## Steps
 
@@ -39,7 +39,7 @@ If any fail, stop and reconsider. Often the right answer is *updating an existin
 
 7. **Update `.claude/skills/README.md`** — add a row to the human-readable table.
 
-8. **Update `claude-instructions/`** if the skill introduces a recurring practice that deserves its own topic file or section (e.g. a new-skill for release automation might update `development-workflow.md`).
+8. **Update `agent-instructions/`** if the skill introduces a recurring practice that deserves its own topic file or section (e.g. a new-skill for release automation might update `development-workflow.md`).
 
 9. **Commit (ask first):** stage the new skill, the updated index, and the updated README. Commit message:
    `feat(skills): add /<slug> — <one-line description>`
@@ -55,7 +55,7 @@ description: <one-line description, verb-first, under 200 chars>
 # <Human title>
 
 <One paragraph: what this skill does and when to invoke it. Link to the
-relevant `claude-instructions/` topic file(s).>
+relevant `agent-instructions/` topic file(s).>
 
 ## Pre-flight
 
@@ -97,4 +97,4 @@ structure. Use a literal example where possible.>
 - [`references/skill-review-criteria.md`](references/skill-review-criteria.md) — the quality bar.
 - [`skills-index.yaml`](skills-index.yaml) — the machine-readable index.
 - [`README.md`](README.md) — the human-readable index.
-- `claude-instructions/scaling-claude-instructions.md` — when to promote a recurring pattern into a dedicated file vs. a skill.
+- `agent-instructions/scaling-agent-instructions.md` — when to promote a recurring pattern into a dedicated file vs. a skill.

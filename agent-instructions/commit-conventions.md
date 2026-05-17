@@ -30,7 +30,7 @@
 
 ## Scope (optional)
 
-A short, stable identifier for the area touched: `(api)`, `(web)`, `(auth)`, `(ci)`, `(claude-instructions)`. Pick from the project's module list where possible.
+A short, stable identifier for the area touched: `(api)`, `(web)`, `(auth)`, `(ci)`, `(agent-instructions)`. Pick from the project's module list where possible.
 
 ## Short summary
 
@@ -48,7 +48,7 @@ A short, stable identifier for the area touched: `(api)`, `(web)`, `(auth)`, `(c
 ## Footer
 
 - **Issue refs:** `Fixes #123`, `Part of #456`. Use `Fixes` only when the commit actually closes the issue.
-- **Co-authors:** `Co-authored-by: Name <email>` — one per line. Include the real author when pair-programming or when Claude contributed substantively.
+- **Co-authors:** `Co-authored-by: Name <email>` — one per line. Include the real author when pair-programming or when an agent contributed substantively.
 - **Breaking changes:** `BREAKING CHANGE: <description>`. Also bump major version.
 
 ## Examples
@@ -85,15 +85,16 @@ Default to squash on PR merge. The PR title becomes the squashed commit summary 
 
 Exception: if the PR contains a sequence of commits that each tell a distinct story and you want them preserved (e.g. a carefully staged refactor), merge with `--no-ff` to keep history. Rare.
 
-## Co-authoring with Claude
+## Co-authoring with agents
 
-When Claude contributed substantively (wrote code, made design choices, not just boilerplate), include:
+When an agent contributed substantively (wrote code, made design choices, not just boilerplate), include an accurate co-author trailer for that agent or service account. Examples:
 
 ```
 Co-authored-by: Claude <noreply@anthropic.com>
+Co-authored-by: Codex <noreply@openai.com>
 ```
 
-Don't credit Claude for trivial edits (a one-line fix you dictated). Do credit when the reasoning or implementation was meaningfully Claude's.
+Do not credit an agent for trivial edits you dictated. Do credit an agent when its reasoning or implementation was material to the change.
 
 ## Signing
 

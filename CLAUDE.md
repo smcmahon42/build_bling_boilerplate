@@ -1,71 +1,21 @@
-# CLAUDE.md — {{PROJECT_NAME}}
+# CLAUDE.md — Claude Code adapter for {{PROJECT_NAME}}
 
-> **For the setup agent:** if you are reading this right after cloning the template, stop here and run `/bootstrap-project` from `.claude/skills/bootstrap-project.md`. It will replace the placeholders, trim sections, and seed your project.
+Claude Code should treat `AGENTS.md` as the canonical project router and `agent-instructions/` as the shared doctrine. This file exists only for Claude-specific startup and slash-command discovery.
 
-This file is a **router**, not a manual. Claude should read it on every session, then fetch the topic file(s) relevant to the current task. Keep it slim — detailed guidance lives in `claude-instructions/`.
+## Startup
 
----
+1. Read `AGENTS.md` first.
+2. Read the relevant topic files in `agent-instructions/`.
+3. Scan `.claude/skills/README.md` and `skills-index.yaml` before non-trivial work.
+4. Follow Claude Code permission settings in `.claude/settings.json`.
 
-## Project
+## Claude-specific workflows
 
-- **Name:** {{PROJECT_NAME}}
-- **One-liner:** {{PROJECT_DESCRIPTION}}
-- **Primary stack:** {{PRIMARY_STACK}}
-- **Status:** {{PROJECT_STATUS}}  <!-- e.g. exploring, alpha, production -->
+- Use `/bootstrap-project` after cloning the template.
+- Use `/start-session` and `/end-session` for non-trivial session handoff.
+- Use `/security-review`, `/dep-audit`, `/test-gaps`, `/new-adr`, `/new-contract`, and `/new-skill` when their triggers apply.
+- Store optional Claude Code memory under `~/.claude/projects/<encoded-path>/memory/`; do not commit it.
 
-## House rules (non-negotiable)
+## Doctrine boundary
 
-1. **TDD is the starting posture.** Every change begins with a failing test. Code follows. See `claude-instructions/testing-practices.md`.
-2. **Security is a first-class gate.** OWASP Web Top 10, OWASP LLM Top 10, and OWASP Agentic Top 10 all apply. See `claude-instructions/security-practices.md` and run `/security-review` before shipping sensitive changes.
-3. **Every change ships documentation.** If the change affects behavior, architecture, or operations, docs go in the matching bucket. See `claude-instructions/documentation-discipline.md`.
-4. **Architectural decisions get an ADR.** See `docs/decisions/README.md` and run `/new-adr` to scaffold one.
-5. **No business-specific code in shared layers.** Domain logic stays in its owned module.
-6. **Trust the tests and the types; don't add validation that can't fail.** Validate at system boundaries only.
-
-## Process checkpoints (enforce these, don't just agree with them)
-
-Each task follows the same loop. These aren't aspirational — they're the default shape of work in this repo.
-
-1. **Orient.** Read `CLAUDE.md` (you are here), then the matching topic file(s) from the table below. Scan `.claude/skills/README.md` — the skills index — to pick relevant skills *before* you start editing.
-2. **Scope.** Classify the task as small / medium / large (see [`claude-instructions/development-workflow.md`](claude-instructions/development-workflow.md#task-scale-matrix)). The scale determines which docs and steps are required.
-3. **Propose.** For medium or large tasks, share the plan (what files, what shape, what tests) *before* editing. For small tasks, proceed directly.
-4. **Test-first.** Write the failing test. Run it. Confirm the failure is the one you expect.
-5. **Edit.** Smallest possible change to green the test. No unrelated cleanup.
-6. **Verify.** Run the full local quality gate: tests, linters, pre-commit hooks, and the relevant OWASP-aware review if security-sensitive.
-7. **Document.** Update the matching doc bucket in the same change (ADR, README, runbook).
-8. **Commit.** Conventional Commits. One logical unit per commit. See [`claude-instructions/commit-conventions.md`](claude-instructions/commit-conventions.md).
-
-For destructive actions (deletions, force-pushes, production writes, external messages, schema drops), stop and confirm before acting — even inside a larger approved plan. The full doctrine of what an agent can do autonomously vs what requires operator confirmation lives in `claude-instructions/agent-autonomy.md` (four levels: autonomous, autonomous-on-branch, propose-and-confirm, human-only).
-
-## When you're about to work on…
-
-| Task | Read |
-| --- | --- |
-| A bug fix, feature, or refactor | `claude-instructions/development-workflow.md` |
-| A commit or PR | `claude-instructions/commit-conventions.md` |
-| Tests (unit, integration, e2e, Playwright) | `claude-instructions/testing-practices.md` |
-| Security review or threat modeling | `claude-instructions/security-practices.md` |
-| Adding a dependency | `claude-instructions/dependency-vetting.md` |
-| Creating a module or boundary | `claude-instructions/component-explainability.md` |
-| An agent-to-agent call, a new task kind, or a capability delegation | `claude-instructions/agent-primitives.md` |
-| Adding or changing a contract (OpenAPI, JSON Schema, protobuf) | `claude-instructions/contract-discipline.md` |
-| Logging, redaction, error-line shape, correlation fields | `claude-instructions/logging-practices.md` |
-| Tracing, metrics, OpenTelemetry wiring across rings | `claude-instructions/observability-practices.md` |
-| Measuring agent work per feature (sessions, turns, cost signals) | `claude-instructions/agent-cost-observability.md` |
-| An architectural decision | `docs/decisions/README.md` |
-| Planning an epic or filing issues | `claude-instructions/epics-and-projects.md` |
-| Writing or editing Claude memory | `claude-instructions/claude-memory.md` |
-| Starting or ending a work session (read or update `STATE.md`) | `claude-instructions/session-handoff.md` |
-| Deciding whether an action is agent-autonomous or needs operator confirmation | `claude-instructions/agent-autonomy.md` |
-| Splitting CLAUDE.md as the project grows | `claude-instructions/scaling-claude-instructions.md` |
-| Writing or organizing docs | `claude-instructions/documentation-discipline.md` |
-
-## Growing the instruction system
-
-This file is **Stage 2** in a three-stage pattern — single `CLAUDE.md` → slim router + `claude-instructions/` → per-module routers. Signals that it's time to split: topic files over ~300 lines, modules with distinct stacks, onboarding that takes more than one read of this file. See `claude-instructions/scaling-claude-instructions.md`.
-
-## Project-specific conventions
-
-<!-- Fill in during /bootstrap-project. Delete this section if there is nothing project-specific yet. -->
-
-- ...
+Do not duplicate house rules here. If project doctrine changes, update `AGENTS.md` or `agent-instructions/` and treat this file as an adapter shim.

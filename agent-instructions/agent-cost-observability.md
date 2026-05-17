@@ -1,6 +1,6 @@
 # Agent cost observability
 
-`claude-instructions/observability-practices.md` covers *runtime* observability —
+`agent-instructions/observability-practices.md` covers *runtime* observability —
 tracing requests through services with OpenTelemetry. This file covers the
 parallel concern: *agent operation* observability — measuring how much
 agent work each open work item consumes over its lifetime.
@@ -14,8 +14,8 @@ when a workflow has degraded into "re-read everything every session."
 ## What's measurable, what isn't
 
 The agent itself does not have authoritative per-session token counts.
-Those numbers live in the harness (Claude Code's session log, the
-provider's billing export, an OpenTelemetry trace from a custom proxy).
+Those numbers live in the harness (for example Claude Code's session log),
+the provider's billing export, or an OpenTelemetry trace from a custom proxy.
 This topic file describes the *proxies* an agent can record in STATE.md;
 projects compose those with their preferred external measurement layer
 for absolute numbers.
@@ -63,11 +63,10 @@ session end.
 The boilerplate is deliberately neutral on which external tool provides
 measurement. Three common shapes:
 
-- **Claude Code session log** — the harness writes structured logs of
-  each session under `~/.claude/projects/<encoded-path>/`. A `jq` query
-  at session end can extract approximate token counts and append them
-  to `Cost signals.Notes`.
-- **Provider billing export** — Anthropic / OpenAI billing exports
+- **Client session log** — some clients write structured logs of each
+  session. A `jq` query at session end can extract approximate token
+  counts and append them to `Cost signals.Notes`.
+- **Provider billing export** — Anthropic / OpenAI or other billing exports
   carry exact per-request token counts. A nightly aggregation can
   attribute spend by session id (recorded in Provenance, see ADR-0009)
   back to the STATE.md entry.
@@ -118,13 +117,13 @@ data or a way to correlate it to external measurements.
 
 ## Related
 
-- `claude-instructions/observability-practices.md` — the runtime
+- `agent-instructions/observability-practices.md` — the runtime
   analog, covering OpenTelemetry traces and metrics through services.
-- `claude-instructions/session-handoff.md` — STATE.md schema and the
+- `agent-instructions/session-handoff.md` — STATE.md schema and the
   `Cost signals` block sits alongside `Provenance`.
-- `claude-instructions/agent-autonomy.md` — L3 operator turns are the
+- `agent-instructions/agent-autonomy.md` — L3 operator turns are the
   costliest in attention and are worth tracking.
-- `.claude/skills/end-session.md` — the skill that records cost
-  signals.
+- `.claude/skills/end-session.md` — the Claude adapter workflow that records
+  cost signals. Other clients should implement the same STATE.md mutation.
 - `docs/decisions/0011-agent-cost-observability.md` — the architectural
   decision proposing this.

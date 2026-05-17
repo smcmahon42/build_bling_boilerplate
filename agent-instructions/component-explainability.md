@@ -63,7 +63,7 @@ change.
 ## How this connects to the rest of the system
 
 - The root `README.md` is the top-level component README for the repo itself.
-- A module README is the Stage 2/3 equivalent for each module (see [scaling-claude-instructions.md](scaling-claude-instructions.md)).
+- A module README is the Stage 2/3 equivalent for each module (see [scaling-agent-instructions.md](scaling-agent-instructions.md)).
 - ADRs (`docs/decisions/`) capture the *decisions* that shaped the component; the README captures the *current state* and the *why*.
 
 Together they form the answer to: "I'm new here, where do I start?" → read the repo README, then the relevant module READMEs, then the ADRs that look interesting.

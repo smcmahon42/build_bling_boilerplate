@@ -3,7 +3,7 @@
 - **Status:** Accepted (pattern)
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0008](0008-session-handoff-state.md); [0003](0003-agent-primitives-as-foundation.md); [0007](0007-opentelemetry-and-correlation.md); `claude-instructions/session-handoff.md`
+- **Related:** [0008](0008-session-handoff-state.md); [0003](0003-agent-primitives-as-foundation.md); [0007](0007-opentelemetry-and-correlation.md); `agent-instructions/session-handoff.md`
 
 ## Context
 
@@ -144,7 +144,7 @@ Skill changes (delivered in this slice):
 
 - [0008](0008-session-handoff-state.md) — the foundational STATE.md ADR
   this slice extends.
-- `claude-instructions/session-handoff.md` — operating doctrine, updated
+- `agent-instructions/session-handoff.md` — operating doctrine, updated
   in this slice.
 - `templates/state/STATE.md` — schema, updated in this slice.
 - `.claude/skills/start-session.md`, `.claude/skills/end-session.md` —

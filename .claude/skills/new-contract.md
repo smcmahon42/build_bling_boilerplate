@@ -22,7 +22,7 @@ Create a new machine-readable contract under `contracts/`. Contracts are the sou
    - JSON Schema: for a task kind, the dotted kind (`summarize.thread`), which becomes `summarize-thread.input.schema.json` + `summarize-thread.output.schema.json`. For a generic data contract, a single kebab-case name.
    - Proto: service name (`orders/v1/service.proto`). Ask for a version segment (default `v1`).
 
-4. **Copy the starter** from `templates/contracts/<form>/` into `contracts/<form>/<target>`. Replace placeholders (`{{SERVICE_NAME}}`, `{{SERVICE_DESCRIPTION}}`, `{{OWNER}}`, `{{PROJECT_NAME}}`) using values from the project's `CLAUDE.md` header and `CODEOWNERS`. Ask the operator for anything missing.
+4. **Copy the starter** from `templates/contracts/<form>/` into `contracts/<form>/<target>`. Replace placeholders (`{{SERVICE_NAME}}`, `{{SERVICE_DESCRIPTION}}`, `{{OWNER}}`, `{{PROJECT_NAME}}`) using values from the project's `AGENTS.md` header and `CODEOWNERS`. Ask the operator for anything missing.
 
 5. **Validate `$ref` / import paths.** Adjust the references to the agent primitives so they resolve from the new contract's location:
    - JSON Schema / OpenAPI: `$ref` to `../agent-primitives/schemas/<primitive>.schema.json` (or whatever path the project uses).
@@ -75,6 +75,6 @@ Create a new machine-readable contract under `contracts/`. Contracts are the sou
 ## Related
 
 - `templates/contracts/` — the form-specific starters and decision matrix.
-- `claude-instructions/contract-discipline.md` — day-to-day operating manual.
-- `claude-instructions/agent-primitives.md` — how task kinds plug into the primitives.
+- `agent-instructions/contract-discipline.md` — day-to-day operating manual.
+- `agent-instructions/agent-primitives.md` — how task kinds plug into the primitives.
 - `.claude/skills/new-adr.md` — companion skill for the load-bearing-contract case.

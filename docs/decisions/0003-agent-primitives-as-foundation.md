@@ -3,7 +3,7 @@
 - **Status:** Accepted as a recommended pattern. Projects adopt this ADR by copying `templates/agent-primitives/schemas/` into their contract tree and filing a follow-up ADR naming their task catalog and any project-specific extensions.
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0002](0002-boundary-annotation-enforcement.md); `claude-instructions/agent-primitives.md`; `templates/agent-primitives/`
+- **Related:** [0002](0002-boundary-annotation-enforcement.md); `agent-instructions/agent-primitives.md`; `templates/agent-primitives/`
 
 ## Context
 
@@ -65,6 +65,6 @@ Projects adopt this pattern by (a) copying the schemas, (b) defining a **task ca
 ## See also
 
 - `templates/agent-primitives/` — the schemas themselves, with a short orientation README.
-- `claude-instructions/agent-primitives.md` — doctrine, the ring model, when to use typed primitives vs. free text, how to add a new task kind.
-- `claude-instructions/security-practices.md` — OWASP Agentic Top 10 items that the capability-token and provenance patterns mitigate (over-permission, unbounded delegation, unverifiable outputs).
+- `agent-instructions/agent-primitives.md` — doctrine, the ring model, when to use typed primitives vs. free text, how to add a new task kind.
+- `agent-instructions/security-practices.md` — OWASP Agentic Top 10 items that the capability-token and provenance patterns mitigate (over-permission, unbounded delegation, unverifiable outputs).
 - [0002](0002-boundary-annotation-enforcement.md) — the adjacent pattern for enforcing conventions at every instance of a boundary; primitive wiring rules are a candidate for enforcement once the pattern is in use.

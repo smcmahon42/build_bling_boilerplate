@@ -3,7 +3,7 @@
 - **Status:** Accepted as a recommended pattern. Projects adopt this ADR by copying the relevant subtrees of `templates/contracts/` and wiring `make contracts` into their build.
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0003](0003-agent-primitives-as-foundation.md); `templates/contracts/`; `claude-instructions/contract-discipline.md`
+- **Related:** [0003](0003-agent-primitives-as-foundation.md); `templates/contracts/`; `agent-instructions/contract-discipline.md`
 
 ## Context
 
@@ -62,6 +62,6 @@ Scaffolding a new contract is a `/new-contract` skill invocation. Projects may e
 
 - `templates/contracts/` — the three-form template tree and decision matrix.
 - `templates/agent-primitives/` — the primitives these contracts reference.
-- `claude-instructions/contract-discipline.md` — operating manual for day-to-day contract work.
+- `agent-instructions/contract-discipline.md` — operating manual for day-to-day contract work.
 - `.claude/skills/new-contract.md` — scaffold a new contract.
 - [0003](0003-agent-primitives-as-foundation.md) — the primitives that anchor this ADR's references.

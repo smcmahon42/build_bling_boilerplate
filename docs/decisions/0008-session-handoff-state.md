@@ -3,7 +3,7 @@
 - **Status:** Accepted (pattern)
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0001](0001-record-architecture-decisions.md); [0003](0003-agent-primitives-as-foundation.md); `claude-instructions/session-handoff.md`; `claude-instructions/claude-memory.md`
+- **Related:** [0001](0001-record-architecture-decisions.md); [0003](0003-agent-primitives-as-foundation.md); `agent-instructions/session-handoff.md`; `agent-instructions/operator-memory.md`
 
 ## Context
 
@@ -11,7 +11,7 @@ Projects built with this boilerplate assume agent collaboration across many
 sessions and contributors. Today the repo already carries three forms of
 durable context:
 
-- **CLAUDE.md + `claude-instructions/`** — instruction surface, mostly static,
+- **CLAUDE.md + `agent-instructions/`** — instruction surface, mostly static,
   read at the top of every session.
 - **`docs/decisions/`** — append-only Architectural Decision Records.
 - **User-local memory** at `~/.claude/projects/<encoded-path>/memory/` —
@@ -25,7 +25,7 @@ shows up in two ways: tokens consumed before any useful work begins, and
 silent drops where work-in-progress is forgotten between sessions.
 
 ADRs are too heavy for sub-decision-level state. User-local memory is the
-wrong scope — `claude-memory.md` explicitly says "transient task state —
+wrong scope — `operator-memory.md` explicitly says "transient task state —
 use Claude's task tracker, not memory." `git log` records what *was* done
 but not what's *currently open*. External issue trackers (GitHub Issues,
 Linear) are valid mirrors but introduce a network round-trip and a tooling
@@ -42,7 +42,7 @@ its "platform not built in one session by one person" framing.
 **Every project derived from this boilerplate carries a committed `STATE.md`
 at the project root**, holding four sections — Open work items, Recently
 completed, Tabled, Open questions — under the schema documented in
-`claude-instructions/session-handoff.md`.
+`agent-instructions/session-handoff.md`.
 
 Paired skills `/start-session` and `/end-session` make reading and updating
 STATE.md a routine session boundary, not a manual chore.
@@ -74,7 +74,7 @@ Wiring rules:
 ## Alternatives considered
 
 - **User-local memory (`~/.claude/projects/.../memory/`).** Rejected: the
-  existing `claude-memory.md` explicitly draws the boundary — memory is for
+  existing `operator-memory.md` explicitly draws the boundary — memory is for
   biographical and time-bound facts, not transient operational state.
   Putting STATE.md content there crosses that line and breaks
   cross-contributor legibility on first clone.
@@ -123,11 +123,11 @@ Wiring rules:
 
 ## See also
 
-- `claude-instructions/session-handoff.md` — operating doctrine and schema.
+- `agent-instructions/session-handoff.md` — operating doctrine and schema.
 - `templates/state/STATE.md` — the seed.
 - `.claude/skills/start-session.md` and `.claude/skills/end-session.md` —
   the paired session-boundary skills.
-- `claude-instructions/claude-memory.md` — the user-local memory system this
+- `agent-instructions/operator-memory.md` — the user-local memory system this
   ADR carefully does *not* extend.
 - [0007](0007-opentelemetry-and-correlation.md) — `Provenance` and
   correlation primitives that slice 8 will layer onto STATE.md rows.

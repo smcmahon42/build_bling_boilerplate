@@ -24,11 +24,11 @@ pre-commit install
 git checkout -b feat/<slug>
 ```
 
-Then follow the flow in [`claude-instructions/development-workflow.md`](claude-instructions/development-workflow.md).
+Then follow the flow in [`agent-instructions/development-workflow.md`](agent-instructions/development-workflow.md).
 
 ## Commit messages
 
-Conventional Commits. See [`claude-instructions/commit-conventions.md`](claude-instructions/commit-conventions.md).
+Conventional Commits. See [`agent-instructions/commit-conventions.md`](agent-instructions/commit-conventions.md).
 
 ## What we will and won't accept
 

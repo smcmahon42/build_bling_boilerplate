@@ -82,5 +82,5 @@ Configuration and runtime posture, not code.
 ## Related
 
 - `remediation-plan.md` (sibling file; copy from `remediation-plan-template.md`) — where findings go.
-- [`claude-instructions/security-practices.md`](../../claude-instructions/security-practices.md) — the OWASP reference.
+- [`agent-instructions/security-practices.md`](../../agent-instructions/security-practices.md) — the OWASP reference.
 - [`SECURITY.md`](../../SECURITY.md) — disclosure policy.

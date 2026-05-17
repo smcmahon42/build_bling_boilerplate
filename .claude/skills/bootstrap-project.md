@@ -1,6 +1,6 @@
 ---
 name: bootstrap-project
-description: One-time setup skill for a project cloned from the build_bling_boilerplate template. Replaces placeholders, trims optional pieces, seeds Claude memory, and offers to initialize GitHub labels/hooks. Delete this file after running.
+description: One-time Claude Code setup skill for a project cloned from the build_bling_boilerplate template. Replaces placeholders, trims optional pieces, seeds optional Claude memory, and offers to initialize GitHub labels/hooks. Delete this file after running.
 ---
 
 # Bootstrap project
@@ -26,7 +26,7 @@ Ask the operator (use AskUserQuestion for each):
 Replace placeholders across every file in the repo:
 
 ```bash
-# Operator: run or let Claude run
+# Operator: run or let Claude Code run
 grep -rl "{{PROJECT_NAME}}" . --exclude-dir=.git
 # Then edit each match; do not use blind sed — confirm each file
 ```
@@ -41,9 +41,9 @@ Ask which practice areas to keep. Default-on for all; offer to drop any. For eac
 - **CI workflows** — let the operator cherry-pick which workflows in `.github/workflows/` to keep. Defaults: keep `pre-commit.yml`, `adr-lint.yml`, `security-scan.yml`, `codeql.yml`, `license-check.yml`. Optional: `dast-scan.yml` (requires a deployed preview URL), `sbom.yml`.
 - **Memory seed** — offer to skip if the operator doesn't use Claude Code memory.
 
-For every dropped section, also update `CLAUDE.md` and `claude-instructions/README.md` to remove dangling references.
+For every dropped section, also update `AGENTS.md`, `CLAUDE.md`, and `agent-instructions/README.md` to remove dangling references.
 
-## Step 3 — Seed Claude memory (confirm before touching home dir)
+## Step 3 — Seed optional Claude memory (confirm before touching home dir)
 
 If the operator wants memory seeding:
 

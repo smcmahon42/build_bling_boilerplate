@@ -24,9 +24,10 @@
 /.github/workflows/sbom.yml         @YOUR-GH-HANDLE
 SECURITY.md                         @YOUR-GH-HANDLE
 
-# Claude instruction surface
+# Agent instruction surface
+/AGENTS.md                          @YOUR-GH-HANDLE
 /CLAUDE.md                          @YOUR-GH-HANDLE
-/claude-instructions/               @YOUR-GH-HANDLE
+/agent-instructions/                @YOUR-GH-HANDLE
 /.claude/                           @YOUR-GH-HANDLE
 
 # CI / release / ownership config

@@ -3,7 +3,7 @@
 - **Status:** Accepted as a recommended pattern. Projects adopt this ADR by wiring an OTel SDK at startup, instrumenting Dispatch and outbound calls, and verifying `trace_id` flows end-to-end through Provenance and logs.
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0003](0003-agent-primitives-as-foundation.md); [0005](0005-structured-logging-and-redaction.md); `claude-instructions/observability-practices.md`
+- **Related:** [0003](0003-agent-primitives-as-foundation.md); [0005](0005-structured-logging-and-redaction.md); `agent-instructions/observability-practices.md`
 
 ## Context
 
@@ -57,7 +57,7 @@ Projects adopting this ADR wire OTel in their `main.go` (or equivalent), instrum
 
 ## See also
 
-- `claude-instructions/observability-practices.md` — the operating manual; what to span, what attributes, metrics list.
+- `agent-instructions/observability-practices.md` — the operating manual; what to span, what attributes, metrics list.
 - [0003](0003-agent-primitives-as-foundation.md) — `Provenance` is the domain-side anchor.
 - [0005](0005-structured-logging-and-redaction.md) — logs carry the same `trace_id` / `span_id`.
 - [0002](0002-boundary-annotation-enforcement.md) — pattern for enforcing "every ring entrypoint extracts trace context" at every call site.

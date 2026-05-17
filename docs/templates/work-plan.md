@@ -28,7 +28,7 @@ Sequenced. One PR each where possible. Reference the milestone they advance.
 | 2 | <task> | M1 | | | Todo |
 | 3 | <task> | M2 | | | Todo |
 
-Effort guide (matches `claude-instructions/development-workflow.md#task-scale-matrix`): S = 1–2 files, M = 3–5 files, L = 6+ files.
+Effort guide (matches `agent-instructions/development-workflow.md#task-scale-matrix`): S = 1–2 files, M = 3–5 files, L = 6+ files.
 
 ## Dependencies
 
