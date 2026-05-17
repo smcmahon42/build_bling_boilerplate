@@ -51,12 +51,26 @@ for the doctrine and the STATE.md schema.
 7. **Record open questions** raised during the session — typically asks to
    the operator that didn't get answered. Include a `Provenance` block for
    agent-asked questions.
-8. **Age out** entries in *Recently completed* that exceed the rolling
+8. **Record cost signals** on multi-session entries (entries that have
+   been touched in more than one session, including this one). Update
+   the `Cost signals` block per
+   [`../../claude-instructions/agent-cost-observability.md`](../../claude-instructions/agent-cost-observability.md):
+   - Increment `Sessions to date`.
+   - Append any new skills invoked to `Skills used (cumulative)`,
+     de-duplicated.
+   - Increment `Operator turns` by the count of operator messages this
+     session.
+   - Update `Context read (approx)` with this session's touched-file
+     count (cumulative or per-session as the operator prefers).
+   - Append any anomalies or absolute token counts to `Notes`.
+   For single-session trivial entries, skip this step unless the
+   operator asks for full cost capture.
+9. **Age out** entries in *Recently completed* that exceed the rolling
    window (~10 entries or 14 days). Don't delete history — git keeps it;
    STATE.md stays scannable.
-9. **Commit.** Conventional Commits:
-   `docs(state): update STATE.md — <one-line session summary>`. Stage only
-   `STATE.md` — this skill doesn't touch code.
+10. **Commit.** Conventional Commits:
+    `docs(state): update STATE.md — <one-line session summary>`. Stage only
+    `STATE.md` — this skill doesn't touch code.
 
 ## Output format
 
@@ -92,5 +106,6 @@ Commit staged: docs(state): update STATE.md — finished rate-limit middleware
 ## Related
 
 - [`../../claude-instructions/session-handoff.md`](../../claude-instructions/session-handoff.md) — doctrine and schema.
+- [`../../claude-instructions/agent-cost-observability.md`](../../claude-instructions/agent-cost-observability.md) — `Cost signals` schema and external-tooling composition.
 - [`start-session.md`](start-session.md) — the paired opening skill.
 - [`../../claude-instructions/commit-conventions.md`](../../claude-instructions/commit-conventions.md) — commit message format.
