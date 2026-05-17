@@ -4,7 +4,7 @@ A minimal, SDK-agnostic Go skeleton for an MCP server that speaks the agent-prim
 
 ## What this is (and isn't)
 
-**Is.** A working reference shape: capability verification, idempotency cache, producer interface, Result construction with Provenance. The core (~300 LOC across `internal/`) is transport-agnostic — it takes a parsed tool call and returns a typed response.
+**Is.** A working reference shape: Task invariant validation, capability verification with scope checks, idempotency cache, producer interface, Result construction with Provenance. The core (~300 LOC across `internal/`) is transport-agnostic — it takes a parsed tool call and returns a typed response.
 
 **Isn't.** A production server. The MCP transport binding in `cmd/server/main.go` is a stub: pick an MCP Go SDK (the official `modelcontextprotocol/go-sdk`, `mark3labs/mcp-go`, or an equivalent) and wire its tool-call handler to the `handler.Dispatch` function. The capability verifier uses a placeholder signature check — swap in real crypto (Ed25519, a KMS, whatever) before production.
 
@@ -25,9 +25,10 @@ internal/producer/               # producer interface + a mock implementation
 2. Replace the placeholder module path **`github.com/example/project`** in `go.mod` and every `import` site with the project's real module path (one find-and-replace across the tree). Replace the `{{AGENT_ID}}` literal in `cmd/server/main.go` with the agent's stable identifier.
 3. Pick an MCP Go SDK. Bind its tool-call handler to `handler.Dispatch`.
 4. Replace `capability.Verify` with real signature verification against your issuer's public key(s).
-5. Swap `idempotency.MemoryCache` for a durable store (Redis, Postgres) if calls span processes.
-6. Register real producers for the task kinds this server serves. One tool = one kind.
-7. Decide if Go types should be codegenerated from the JSON Schemas (`go-jsonschema`, `quicktype`) — if yes, move `internal/primitives/` to the generated tree and keep the hand-written file as a fallback.
+5. Review the default capability scope matcher. It treats `Capability.scope` as a JSON subset of `Task.inputs`; replace it with kind-specific matching if your resources are hierarchical or tenant-scoped outside `inputs`.
+6. Swap `idempotency.MemoryCache` for a durable store (Redis, Postgres) if calls span processes.
+7. Register real producers for the task kinds this server serves. One tool = one kind.
+8. Decide if Go types should be codegenerated from the JSON Schemas (`go-jsonschema`, `quicktype`) — if yes, move `internal/primitives/` to the generated tree and keep the hand-written file as a fallback.
 
 ## Why SDK-agnostic
 

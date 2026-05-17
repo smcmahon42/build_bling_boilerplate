@@ -5,7 +5,7 @@ Minimal Go CLI that exercises the OpenAPI contract as a thin client. It builds a
 ## What this demonstrates
 
 1. **Input ergonomics** — CLI flags map to `Task.inputs` / `Task.params` fields. The flag layer is the *only* thing that exists because humans are the consumer.
-2. **Capability-token handling** — the token is read from an env var (`CAPABILITY_TOKEN`), base64-decoded, and sent as a bearer header. Never captured in shell history.
+2. **Capability-token handling** — the token is read from an env var (`CAPABILITY_TOKEN`), accepted as JSON or base64url-encoded JSON, embedded in the `Task`, and also sent as a bearer header for HTTP gateways. Never captured in shell history.
 3. **Idempotency** — the CLI sets `Idempotency-Key` so retries dedupe.
 4. **Error rendering** — a `Result` with `status: error` maps to a non-zero exit code and a structured stderr message carrying `error.code`. Scripts grep on the code; humans read the message.
 5. **No domain logic.** The CLI contains argument parsing, HTTP plumbing, and rendering — nothing else. The server is authoritative for everything else.
