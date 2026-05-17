@@ -1,6 +1,8 @@
 # build_bling_boilerplate
 
-A language-agnostic template for new AI / engineering projects. Ships the practices — not the scaffolding — that make a codebase legible to both humans and Claude from day one.
+A language-agnostic template for new AI / engineering projects — built for codebases where agents are first-class collaborators and work spans many sessions and contributors, not just one.
+
+It ships the **practices** (not the runtime scaffolding) that make a repo legible to both humans and Claude from day one. The session-handoff, review-state, autonomy, and cost-observability primitives mean a new agent or contributor opening the project tomorrow already knows: what's open right now, what was just done, what the agent before them *proposed* (and whether you've reviewed it), what each feature has cost so far, *and* who you are and how you work — all from a single read of two files (`STATE.md` at the repo root, and your user-local Claude memory at `~/.claude/projects/<path>/memory/`).
 
 What you get:
 
@@ -10,12 +12,25 @@ What you get:
 - **TDD as the starting posture**, with Playwright as the standard for frontend e2e.
 - **GitHub templates** for PRs, bugs, features, epics, and ADR proposals, plus a baseline label taxonomy.
 - **Pre-commit hooks** (gitleaks, hygiene, markdownlint) and CI workflows (security-scan, CodeQL, SBOM, license-check, ADR-lint).
-- **Claude memory templates** you can seed into `~/.claude/projects/<path>/memory/` for this project.
+- **User-local Claude memory templates** — so the agent starts every session knowing your role, stack, preferences, and current project context, not asking. Four memory types (`user`, `feedback`, `project`, `reference`) seeded into `~/.claude/projects/<path>/memory/`. See [How Claude memory works in your projects](#how-claude-memory-works-in-your-projects) below.
 - A **`/bootstrap-project` skill** that walks you through setup: placeholders, optional trim, memory seeding, GitHub labels, first ADR.
 - **`STATE.md` + `/start-session` + `/end-session`** — project-local session-handoff ledger so the next session grounds in one file read instead of re-grepping the repo. See [`claude-instructions/session-handoff.md`](claude-instructions/session-handoff.md) and [ADR-0008](docs/decisions/0008-session-handoff-state.md).
 - **Review state + Provenance on every STATE.md row** — agent-authored entries start as evidence (`Review: unreviewed`) until the operator confirms; an optional `Provenance` block records skill, session, prompt summary, and context. Keeps the line between agent observation and operator direction explicit. See [ADR-0009](docs/decisions/0009-provenance-and-review-state-on-state-rows.md).
 - **Four-level agent-autonomy doctrine** — L1 read, L2 autonomous-on-branch (plan-first on medium/large), L3 propose-and-confirm, L4 human-only. Resolves the in-between of "this isn't a destructive op but it's not trivial either." See [`claude-instructions/agent-autonomy.md`](claude-instructions/agent-autonomy.md) and [ADR-0010](docs/decisions/0010-agent-autonomy-scope.md).
 - **Per-feature cost signals on STATE.md entries** — sessions to date, skills used, operator turns, files read. Captured by `/end-session` on multi-session entries; external billing / OpenTelemetry data composes via the session id already in Provenance. Makes the "skills over recall" intuition testable. See [`claude-instructions/agent-cost-observability.md`](claude-instructions/agent-cost-observability.md) and [ADR-0011](docs/decisions/0011-agent-cost-observability.md).
+
+## Why this exists
+
+Without primitives like these, every new agent session pays the same costs over and over. Four failure modes recur:
+
+- **Re-deriving ground state.** The next session re-reads the codebase to figure out "what's open?" — exactly the friction that makes "skills over recall" feel impossible. `STATE.md` replaces that with one file read.
+- **Agent observation silently becoming instruction.** Without a review-state schema, an entry an agent added because it noticed something looks identical to one you confirmed. Future agents treat both as direction. Review + Provenance draw the line: agent-authored entries start as `unreviewed`, and only the operator promotes to `confirmed` or `rejected`.
+- **Over-asking or over-acting.** Without a doctrine for what's autonomous vs what needs your turn, agents either ping you constantly (annoying) or quietly take actions you'd have wanted to see first (dangerous). The four-level autonomy doctrine pins it down: L1 read, L2 autonomous-on-branch, L3 propose-and-confirm, L4 human-only.
+- **Cost drift going unnoticed.** Without per-feature cost attribution, you can't tell whether a workflow has degraded from 2 sessions to 5 over time — or whether one of your "skills over recall" intuitions is actually paying off. Cost signals make it testable.
+
+The original boilerplate slices (1–6) gave projects ADRs, contracts, agent primitives, structured logs, and OpenTelemetry. Slices 7–10 made the *session loop itself* something agents and humans share durably, instead of rebuilding from scratch every time.
+
+The whole template is opinionated on one principle: **agent-written content starts as evidence, not instruction.** It's a position user-local Claude memory already takes by default ("transient task state — use Claude's task tracker, not memory"). This template extends the same discipline to project-local state, governance, and cost — so an agent can compound work across sessions without quietly authoring the rules it operates under.
 
 ## Who this is for
 
@@ -67,6 +82,60 @@ Architectural decisions that crystallize get an ADR (`/new-adr`); decisions stil
 | Cost signals (slice 10) | Per-entry cost over its lifetime | `/start-session` (visible on items) | `/end-session` |
 
 Every ledger entry carries its origin (Provenance), authority (Review), and the cost it has consumed (Cost signals). The autonomy doctrine governs what the agent can do *to* the ledger and the rest of the repo. The session-handoff skills are the routine that keeps the whole thing accurate.
+
+## How Claude memory works in your projects
+
+This template assumes two distinct stores of cross-session context, and ships templates for both. They answer different questions:
+
+| Store | Answers | Lives in | Audience |
+| --- | --- | --- | --- |
+| **User-local Claude memory** | "Who am I working with, and how do they like to work?" | `~/.claude/projects/<encoded-path>/memory/` (per-user, on your machine, not committed) | This operator only |
+| **Project-local `STATE.md`** | "Where is the project right now?" | Repo root (committed) | Every contributor and agent |
+
+### User-local Claude memory
+
+Claude Code maintains a per-project memory store on your machine, separate from the repo. It's where the agent remembers things about **you** across sessions — your role, your stack fluency, your communication preferences, the corrections and confirmations from past sessions, time-bound project facts (deadlines, stakeholders).
+
+Without it, every conversation opens with the same orientation tax: "I'm a frontend engineer doing solutions-architect work, prefer concise responses, no acronyms…" With it, the agent has continuity of relationship — and the time you spend re-orienting the model becomes time spent on the work.
+
+The boilerplate ships templates for four memory types:
+
+| Type | Holds | Example |
+| --- | --- | --- |
+| **`user`** | Your role, what you do, what you already know. Slow-moving. | "Self-taught frontend engineer, 8 years as a Solutions Architect for Customer Data Platforms; new to deployment ops." |
+| **`feedback`** | Corrections and confirmations from past sessions. | "Don't mock the database in integration tests — got burned by divergence before." |
+| **`project`** | Time-bound project facts. Decays as the project moves. | "Release cut scheduled 2026-05-12; only bug fixes after that date." |
+| **`reference`** | Pointers to external systems. | "Pipeline bugs tracked in Linear project INGEST." |
+
+Each memory file is a markdown document with YAML frontmatter naming the `type` and a one-line description. A `MEMORY.md` index keeps the directory scannable on every load. Full conventions live in [`claude-instructions/claude-memory.md`](claude-instructions/claude-memory.md).
+
+The `/bootstrap-project` skill offers to seed the templates into the right user-local path on first run. You can also copy them manually — see [`templates/memory/README.md`](templates/memory/README.md).
+
+### How memory composes with STATE.md
+
+The two stores carry orthogonal information and have different lifecycles:
+
+- **User-local memory** is *biographical*. It travels with you across all projects you work on, slowly accumulating preferences and reusable context. It is not shared with teammates and not part of the repo.
+- **`STATE.md`** is *operational*. It lives in the repo, is the same for every contributor and agent, and changes every session.
+
+Together, when a new session opens, the agent knows both **who you are** (memory) and **where the project is** (STATE.md). That single change — replacing the first 5 minutes of every session with a single orientation read — is the entire payoff loop this template is designed around.
+
+**The boundary matters.** Putting operational state in user-local memory breaks cross-contributor legibility (only you see it). Putting biographical context in `STATE.md` leaks operator preferences into the committed repo. The Memory-vs-project-state comparison table in [`claude-instructions/claude-memory.md`](claude-instructions/claude-memory.md) is the normative reference.
+
+### What this looks like in practice
+
+After bootstrap, your user-local memory directory holds files like:
+
+```
+~/.claude/projects/-Users-you-projects-your-app/memory/
+  MEMORY.md                  # index — always loaded into context
+  user_role.md               # who you are
+  feedback_pr_style.md       # "PRs stay small, single-purpose"
+  project_release_q2.md      # "Q2 release cut 2026-06-30; bug-only after"
+  reference_grafana.md       # "Latency dashboard: grafana.internal/d/api-latency"
+```
+
+The repo root holds `STATE.md` with sections for open work, recently completed, tabled, and open questions. Both stores get richer over time. Both get read at the top of every session. Neither requires you to type "remember that…" — the agent and the operating doctrine do that work for you.
 
 ## File map
 
