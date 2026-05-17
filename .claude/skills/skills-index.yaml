@@ -88,3 +88,21 @@ skills:
     scale: [small, medium, large]
     tools: [Read, Write, Edit, Glob, Bash, AskUserQuestion]
     lifecycle: recurring
+
+  - name: start-session
+    file: start-session.md
+    description: Orient at the top of a work session by reading STATE.md, surfacing blocked or in-progress items, and asking the operator for direction.
+    invoke: /start-session
+    triggers: [ops, agent, documentation]
+    scale: [medium, large]
+    tools: [Read, Bash]
+    lifecycle: recurring
+
+  - name: end-session
+    file: end-session.md
+    description: Close a work session by reconciling STATE.md against what actually happened — move completed items, mark tabled or blocked entries, record open questions, commit STATE.md.
+    invoke: /end-session
+    triggers: [ops, agent, documentation]
+    scale: [medium, large]
+    tools: [Read, Edit, Bash]
+    lifecycle: recurring
