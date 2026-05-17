@@ -1,13 +1,13 @@
 # STATE — {{PROJECT_NAME}}
 
 > Project-local session-handoff ledger. **Not** user-local memory (which lives
-> at `~/.claude/projects/<encoded-path>/memory/`). **Not** an Architectural
+> in client-local memory, such as Claude Code's `~/.claude/projects/<encoded-path>/memory/`). **Not** an Architectural
 > Decision Record (which lives in `docs/decisions/`). This file is the running
 > record of what's open, in-progress, blocked, tabled, or recently completed —
 > so the next session can ground itself in seconds without re-reading the repo.
 >
-> Schema and lifecycle live in
-> [`claude-instructions/session-handoff.md`](../../claude-instructions/session-handoff.md).
+> Schema and lifecycle live in `agent-instructions/session-handoff.md` after
+> this template is copied to the project root.
 > Run `/start-session` at the top of each work session and `/end-session`
 > before wrapping up.
 

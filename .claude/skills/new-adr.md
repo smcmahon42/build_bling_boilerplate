@@ -34,7 +34,7 @@ Create the next ADR in `docs/decisions/`.
 
 ## When NOT to write an ADR
 
-- Coding style or naming conventions → `claude-instructions/` or linter config.
+- Coding style or naming conventions → `agent-instructions/` or linter config.
 - Minor refactors → commit message.
 - Choices that don't have meaningful alternatives → not a decision, just a step.
 

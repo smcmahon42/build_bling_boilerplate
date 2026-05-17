@@ -22,7 +22,7 @@ An ADR is warranted when the decision:
 - Changes an auth boundary, data-flow boundary, or observability boundary.
 - Has a reasonable alternative that was considered and rejected.
 
-Decisions that don't warrant an ADR: coding style, naming conventions, minor refactors, file locations, linter rules. These live in `claude-instructions/`, `CONTRIBUTING.md`, or the lint configs.
+Decisions that don't warrant an ADR: coding style, naming conventions, minor refactors, file locations, linter rules. These live in `agent-instructions/`, `CONTRIBUTING.md`, or the lint configs.
 
 ## Alternatives considered
 
@@ -38,11 +38,11 @@ Decisions that don't warrant an ADR: coding style, naming conventions, minor ref
 - **Follow-ups:**
   - `docs/decisions/README.md` maintains the index.
   - Reviewers flag PRs that implement architectural changes without a matching ADR.
-  - `claude-instructions/documentation-discipline.md` codifies when an ADR is required.
+  - `agent-instructions/documentation-discipline.md` codifies when an ADR is required.
 
 ## See also
 
 - [TEMPLATE.md](TEMPLATE.md) — ADR template.
 - [Michael Nygard — Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) — original proposal.
 - [ADR GitHub org](https://adr.github.io/) — reference patterns.
-- `../../claude-instructions/documentation-discipline.md` — the broader doc discipline rule.
+- `../../agent-instructions/documentation-discipline.md` — the broader doc discipline rule.

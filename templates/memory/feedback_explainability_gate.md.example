@@ -10,7 +10,7 @@ Every meaningful code boundary (package, module, component group, service) ships
 2. **Why does it exist as a separate thing?** — what would break if it were merged into its neighbor.
 3. **How does it connect?** — what it receives, what it emits, who calls it, who it calls.
 
-See [`claude-instructions/component-explainability.md`](../../claude-instructions/component-explainability.md) for the full four-question pattern and the 20–40-line target shape.
+See [`agent-instructions/component-explainability.md`](../../agent-instructions/component-explainability.md) for the full four-question pattern and the 20–40-line target shape.
 
 **Why:** This is a code-quality gate disguised as a doc rule. If the README is hard to write in plain English, the boundary is unclear — the code needs refactoring, not just more paragraphs. AI-generated code is especially prone to being technically correct but structurally unclear; this discipline forces clarity before the structure rots.
 

@@ -6,8 +6,9 @@ instead of re-reading the repo to figure out what's open, what's done, and
 what got parked.
 
 Pair this with [`templates/state/STATE.md`](../templates/state/STATE.md) (the
-seed) and the [`/start-session`](../.claude/skills/start-session.md) and
-[`/end-session`](../.claude/skills/end-session.md) skills.
+seed) and an adapter-specific start/end-session workflow. Claude Code ships
+those workflows as [`/start-session`](../.claude/skills/start-session.md) and
+[`/end-session`](../.claude/skills/end-session.md).
 
 ## What STATE.md is
 
@@ -25,11 +26,10 @@ project root on bootstrap and treat it as living history.
 
 ## What STATE.md is NOT
 
-- **Not user-local Claude memory.** That lives at
-  `~/.claude/projects/<encoded-path>/memory/` and holds *biographical* facts
-  about the operator plus time-bound *project* context. STATE.md holds
+- **Not client-local operator memory.** That holds *biographical* facts about
+  the operator plus time-bound *project* context. STATE.md holds
   *operational handoff* — different lifecycle, different scope. See
-  [`claude-memory.md`](claude-memory.md).
+  [`operator-memory.md`](operator-memory.md).
 - **Not an Architectural Decision Record.** ADRs in `docs/decisions/` are
   append-only records of accepted decisions. STATE.md rows are mutable
   working state. An open-work item that crystallizes into an architectural
@@ -162,8 +162,8 @@ merits a STATE.md update; if it doesn't, it doesn't.
 
 The "platform isn't built in one session by one person" framing means every
 agent at session N inherits the work of every prior session. The existing
-primitives — ADRs for decisions, `git log` for history, user-local memory for
-biographical context — leave a gap: the *currently-open* state of the
+primitives — ADRs for decisions, `git log` for history, client-local memory
+for biographical context — leave a gap: the *currently-open* state of the
 project. STATE.md fills that gap. It makes agent collaboration cheap by
 replacing "re-read the repo" with "read one file."
 
@@ -171,10 +171,10 @@ replacing "re-read the repo" with "read one file."
 
 - [`templates/state/STATE.md`](../templates/state/STATE.md) — the seed.
 - [`.claude/skills/start-session.md`](../.claude/skills/start-session.md) —
-  opens a session against STATE.md.
+  Claude adapter workflow that opens a session against STATE.md.
 - [`.claude/skills/end-session.md`](../.claude/skills/end-session.md) —
-  closes a session and updates STATE.md.
-- [`claude-memory.md`](claude-memory.md) — the user-local memory system, a
-  different concern.
+  Claude adapter workflow that closes a session and updates STATE.md.
+- [`operator-memory.md`](operator-memory.md) — the client-local memory
+  boundary, a different concern.
 - [`../docs/decisions/0008-session-handoff-state.md`](../docs/decisions/0008-session-handoff-state.md)
   — the architectural decision proposing this pattern.

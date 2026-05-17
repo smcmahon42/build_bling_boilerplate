@@ -13,7 +13,7 @@ Thumbs.db
 .env.*
 !.env.example
 
-# Claude Code local-only state
+# Agent client local-only state
 .claude/settings.local.json
 .claude/worktrees/
 

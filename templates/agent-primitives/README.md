@@ -36,7 +36,7 @@ Agents composed across rings (agent → sub-agent → sub-sub-agent) lose fideli
 
 ## Related
 
-- [`claude-instructions/agent-primitives.md`](../../claude-instructions/agent-primitives.md) — doctrine and design guidance.
+- [`agent-instructions/agent-primitives.md`](../../agent-instructions/agent-primitives.md) — doctrine and design guidance.
 - [`docs/decisions/0003-agent-primitives-as-foundation.md`](../../docs/decisions/0003-agent-primitives-as-foundation.md) — the decision record.
 
 ## Owner

@@ -58,5 +58,5 @@ Coverage noise: tests that assert tautologies, snapshot tests on structures nobo
 
 ## Related
 
-- `claude-instructions/testing-practices.md` — pyramid, framework conventions, what tests to write.
-- `claude-instructions/development-workflow.md` — TDD loop.
+- `agent-instructions/testing-practices.md` — pyramid, framework conventions, what tests to write.
+- `agent-instructions/development-workflow.md` — TDD loop.

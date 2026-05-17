@@ -24,7 +24,7 @@ Templates to copy when you start using each:
 
 ## Related
 
-- [`claude-instructions/security-practices.md`](../../claude-instructions/security-practices.md) — the three OWASP lists.
+- [`agent-instructions/security-practices.md`](../../agent-instructions/security-practices.md) — the three OWASP lists.
 - [`/security-review`](../../.claude/skills/security-review.md) — run against the current diff.
 - [`/dep-audit`](../../.claude/skills/dep-audit.md) — language-detecting vuln scans.
 - [`SECURITY.md`](../../SECURITY.md) — disclosure policy.

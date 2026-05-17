@@ -2,7 +2,7 @@
 
 Seed files for Claude Code's user-local memory system. These are **not** copied into the repo — they're copied into your home directory so Claude can load them across sessions on this specific project.
 
-See [`claude-instructions/claude-memory.md`](../../claude-instructions/claude-memory.md) for the underlying concepts.
+See [`agent-instructions/operator-memory.md`](../../agent-instructions/operator-memory.md) for the underlying concepts.
 
 ## Where this goes
 

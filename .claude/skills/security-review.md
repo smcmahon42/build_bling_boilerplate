@@ -5,7 +5,7 @@ description: Walk the current branch's changes against OWASP Web Top 10, OWASP L
 
 # Security review
 
-Run this skill before shipping any change that touches authentication, authorization, data flow, tool use, memory, logs, or external integrations. It covers the three OWASP lists used across this project — see `claude-instructions/security-practices.md` for the full reference.
+Run this skill before shipping any change that touches authentication, authorization, data flow, tool use, memory, logs, or external integrations. It covers the three OWASP lists used across this project — see `agent-instructions/security-practices.md` for the full reference.
 
 ## What to review
 
@@ -83,5 +83,5 @@ After the table, include:
 
 ## Related
 
-- `claude-instructions/security-practices.md` — full reference for the three lists.
+- `agent-instructions/security-practices.md` — full reference for the three lists.
 - `/dep-audit` — companion skill for component-level vulnerability scanning.

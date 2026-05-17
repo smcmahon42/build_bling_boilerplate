@@ -3,7 +3,7 @@
 - **Status:** Accepted as a recommended pattern. Projects adopt this ADR by wiring a structured logger that enforces the required fields and by installing the redaction layer as a boundary check.
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0003](0003-agent-primitives-as-foundation.md); `claude-instructions/logging-practices.md`; `claude-instructions/security-practices.md`
+- **Related:** [0003](0003-agent-primitives-as-foundation.md); `agent-instructions/logging-practices.md`; `agent-instructions/security-practices.md`
 
 ## Context
 
@@ -53,7 +53,7 @@ The project chooses a mainstream structured logger for its language (`slog`, `pi
 
 ## See also
 
-- `claude-instructions/logging-practices.md` — day-to-day operating manual.
-- `claude-instructions/security-practices.md` — OWASP items around prompt/output logging and PII handling.
+- `agent-instructions/logging-practices.md` — day-to-day operating manual.
+- `agent-instructions/security-practices.md` — OWASP items around prompt/output logging and PII handling.
 - [0003](0003-agent-primitives-as-foundation.md) — the Provenance fields that log fields mirror.
 - [0002](0002-boundary-annotation-enforcement.md) — the pattern for enforcing "every logger goes through the wrapper" at every call site.

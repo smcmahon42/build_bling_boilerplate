@@ -30,7 +30,7 @@ Quality bar for skills in `.claude/skills/`. Use this checklist both when author
 
 - [ ] **Language-agnostic** — if the skill detects a stack, it degrades gracefully when the stack isn't present. No silent failures.
 - [ ] **No hard-coded secrets, credentials, or domain-specific identifiers.**
-- [ ] **No opinions that conflict with `CLAUDE.md` or the cross-cutting `claude-instructions/` files.** If it needs to, it should update those files instead.
+- [ ] **No opinions that conflict with `AGENTS.md` or the cross-cutting `agent-instructions/` files.** If it needs to, it should update those files instead.
 
 ## Index integration
 
@@ -44,7 +44,7 @@ Quality bar for skills in `.claude/skills/`. Use this checklist both when author
 ## Related topic files
 
 - [ ] If the skill references cross-cutting rules (testing, security, docs), it links to the topic file rather than duplicating content.
-- [ ] If the skill introduces a new recurring practice, the corresponding topic file in `claude-instructions/` is updated in the same PR.
+- [ ] If the skill introduces a new recurring practice, the corresponding topic file in `agent-instructions/` is updated in the same PR.
 
 ## Testability
 

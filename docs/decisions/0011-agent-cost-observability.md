@@ -3,7 +3,7 @@
 - **Status:** Accepted (pattern)
 - **Date:** <!-- filled on merge -->
 - **Deciders:** project maintainers
-- **Related:** [0007](0007-opentelemetry-and-correlation.md); [0008](0008-session-handoff-state.md); [0009](0009-provenance-and-review-state-on-state-rows.md); [0010](0010-agent-autonomy-scope.md); `claude-instructions/agent-cost-observability.md`
+- **Related:** [0007](0007-opentelemetry-and-correlation.md); [0008](0008-session-handoff-state.md); [0009](0009-provenance-and-review-state-on-state-rows.md); [0010](0010-agent-autonomy-scope.md); `agent-instructions/agent-cost-observability.md`
 
 ## Context
 
@@ -124,9 +124,9 @@ Wiring rules:
 
 ## See also
 
-- `claude-instructions/agent-cost-observability.md` — operating
+- `agent-instructions/agent-cost-observability.md` — operating
   doctrine and the cost-signal schema.
-- `claude-instructions/observability-practices.md` — the runtime
+- `agent-instructions/observability-practices.md` — the runtime
   analog this slice deliberately mirrors.
 - [0008](0008-session-handoff-state.md), [0009](0009-provenance-and-review-state-on-state-rows.md),
   [0010](0010-agent-autonomy-scope.md) — the prior slices this

@@ -1,6 +1,6 @@
 # Document templates
 
-Starter templates for the structured documents referenced in `claude-instructions/development-workflow.md`'s task scale matrix.
+Starter templates for the structured documents referenced in `agent-instructions/development-workflow.md`'s task scale matrix.
 
 ## When to use each
 
@@ -29,6 +29,6 @@ All three templates share the same invariants:
 
 ## Related
 
-- [`../../claude-instructions/development-workflow.md`](../../claude-instructions/development-workflow.md) — task scale matrix.
+- [`../../agent-instructions/development-workflow.md`](../../agent-instructions/development-workflow.md) — task scale matrix.
 - [`../decisions/`](../decisions/) — ADRs.
-- [`../../claude-instructions/documentation-discipline.md`](../../claude-instructions/documentation-discipline.md) — doc routing rules.
+- [`../../agent-instructions/documentation-discipline.md`](../../agent-instructions/documentation-discipline.md) — doc routing rules.

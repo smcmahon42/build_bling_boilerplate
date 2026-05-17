@@ -1,6 +1,6 @@
 <!--
 Thanks for the PR. Keep the description tight — the code tells the "what," this section tells the "why."
-See claude-instructions/development-workflow.md for the full PR flow.
+See agent-instructions/development-workflow.md for the full PR flow.
 -->
 
 ## Summary
@@ -35,7 +35,7 @@ Fixes #
 
 - [ ] Module README updated (if the module's contract changed)
 - [ ] ADR added (if this implements an architectural decision)
-- [ ] claude-instructions updated (if Claude's behavior on this project changed)
+- [ ] agent-instructions updated (if agent behavior on this project changed)
 - [ ] Other docs: <bucket/file>
 
 ## Breaking changes
@@ -45,6 +45,6 @@ Fixes #
 ## Checklist
 
 - [ ] Branch follows `feat/N-slug | fix/N-slug | chore/slug | docs/slug` naming.
-- [ ] Commits follow Conventional Commits (see `claude-instructions/commit-conventions.md`).
+- [ ] Commits follow Conventional Commits (see `agent-instructions/commit-conventions.md`).
 - [ ] Pre-commit hooks pass locally.
 - [ ] Security workflows green (or explained if skipped).

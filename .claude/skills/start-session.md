@@ -9,7 +9,7 @@ Run this at the top of every non-trivial work session. It loads the
 project-local handoff ledger (`STATE.md`) and grounds the agent on what's
 open, what's blocked, and what came up since last session.
 
-See [`../../claude-instructions/session-handoff.md`](../../claude-instructions/session-handoff.md)
+See [`../../agent-instructions/session-handoff.md`](../../agent-instructions/session-handoff.md)
 for the doctrine and the STATE.md schema.
 
 ## Pre-flight
@@ -87,6 +87,6 @@ How would you like to proceed?
 
 ## Related
 
-- [`../../claude-instructions/session-handoff.md`](../../claude-instructions/session-handoff.md) — doctrine and schema.
+- [`../../agent-instructions/session-handoff.md`](../../agent-instructions/session-handoff.md) — doctrine and schema.
 - [`end-session.md`](end-session.md) — the paired closing skill.
 - [`../../templates/state/STATE.md`](../../templates/state/STATE.md) — the seed.

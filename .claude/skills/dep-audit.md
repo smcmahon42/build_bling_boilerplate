@@ -40,7 +40,7 @@ For every dep added on the current branch (compare to `origin/main`):
 - **Maintenance:** last commit older than 12 months? Flag.
 - **Necessity:** is this replaceable with ~50 lines of code? Ask the author in the PR.
 
-See `claude-instructions/dependency-vetting.md` for the full five-point check.
+See `agent-instructions/dependency-vetting.md` for the full five-point check.
 
 ## Output format
 
@@ -73,5 +73,5 @@ Confirm `security-scan.yml` exists and includes a job for each detected stack. C
 
 ## Related
 
-- `claude-instructions/dependency-vetting.md` — the five-point check in full.
+- `agent-instructions/dependency-vetting.md` — the five-point check in full.
 - `.github/workflows/security-scan.yml` — CI version of the same scans.

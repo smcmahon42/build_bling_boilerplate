@@ -55,7 +55,7 @@ This project follows OWASP guidance across three lists: Web Top 10, LLM Top 10, 
 - License compliance checks (copyleft denied by default).
 - Least-privilege workflow permissions.
 
-See [`claude-instructions/security-practices.md`](claude-instructions/security-practices.md) for the full checklist.
+See [`agent-instructions/security-practices.md`](agent-instructions/security-practices.md) for the full checklist.
 
 ## Supported versions
 

@@ -31,7 +31,7 @@ Walking the tree works because every Result carries `provenance.parent_step_id` 
 4. **CapabilityTokens only attenuate.** When ring N delegates to ring N+1, construct a *narrower* token (same or fewer actions, narrower scope, same-or-shorter TTL). Set `attenuated_from` to the parent token_id.
 5. **Errors are structured.** `Result.error.code` is machine-readable, stable, dotted (e.g. `budget.exceeded`, `input.invalid`, `capability.denied`). Prose goes in `message`.
 6. **Free text lives inside `output`.** Under a schema-defined field. Not as the Result itself.
-7. **Validate at ring boundaries.** Every Task received by a producer and every Result received by a consumer is schema-validated. Internal code trusts the types (see house rule 6 in root `CLAUDE.md`).
+7. **Validate at ring boundaries.** Every Task received by a producer and every Result received by a consumer is schema-validated. Internal code trusts the types (see house rule 6 in root `AGENTS.md`).
 
 ## Adding a new task kind
 

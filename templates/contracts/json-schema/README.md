@@ -43,4 +43,4 @@ Producers read the catalog at startup to know which kinds they serve; routers re
 
 - [`../README.md`](../README.md) — contract-form decision matrix.
 - [`../../agent-primitives/`](../../agent-primitives/) — the `Task`/`Result` primitives these kinds plug into.
-- [`../../../claude-instructions/agent-primitives.md`](../../../claude-instructions/agent-primitives.md) — how to add a new task kind end-to-end.
+- [`../../../agent-instructions/agent-primitives.md`](../../../agent-instructions/agent-primitives.md) — how to add a new task kind end-to-end.

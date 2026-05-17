@@ -51,9 +51,9 @@ jobs:
             3. **Tests** — confirm tests were added or updated. If a bug fix,
                confirm a regression test exists. Flag any disabled or skipped
                tests. TDD is the project standard (see
-               `claude-instructions/testing-practices.md`).
+               `agent-instructions/testing-practices.md`).
             4. **Security (three OWASP lists — see
-               `claude-instructions/security-practices.md`)** — walk every
+               `agent-instructions/security-practices.md`)** — walk every
                category that the diff plausibly touches and rate it. Use the
                same severity ladder as `/security-review`:
                - **OWASP Web Top 10** (A01–A10)
@@ -62,9 +62,9 @@ jobs:
                Be explicit about n/a rows. Do not invent findings.
             5. **Documentation** — does the change ship docs in the matching
                bucket? Is an ADR required and present? (See
-               `claude-instructions/documentation-discipline.md`.)
+               `agent-instructions/documentation-discipline.md`.)
             6. **Style / consistency** — Conventional Commits, naming, linter
-               hygiene (see `claude-instructions/commit-conventions.md`).
+               hygiene (see `agent-instructions/commit-conventions.md`).
             7. **Blocking / non-blocking** — group findings as MUST FIX, SHOULD
                FIX, or NITS.
 
@@ -76,7 +76,7 @@ jobs:
             - Prefer precise quotes over generic advice.
             - If the diff is huge, focus on the highest-impact 5–10 findings
               and say so.
-            - Respect the project's house rules in `CLAUDE.md`.
+            - Respect the project's house rules in `AGENTS.md`.
 
             ## Output format
 

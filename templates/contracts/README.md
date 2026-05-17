@@ -33,5 +33,5 @@ Manual path: copy the relevant subdirectory's starter file, rename, edit, add a 
 ## Related
 
 - [`agent-primitives/`](../agent-primitives/) — the typed primitives these contracts reference.
-- [`claude-instructions/contract-discipline.md`](../../claude-instructions/contract-discipline.md) — operating manual.
+- [`agent-instructions/contract-discipline.md`](../../agent-instructions/contract-discipline.md) — operating manual.
 - [ADR 0004](../../docs/decisions/0004-contracts-as-source-of-truth.md) — the decision record.

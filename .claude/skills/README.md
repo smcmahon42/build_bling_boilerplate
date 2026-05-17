@@ -20,7 +20,7 @@ The machine-readable index lives in [`skills-index.yaml`](skills-index.yaml) —
 
 ## How to pick a skill
 
-1. Classify the task scale (see `claude-instructions/development-workflow.md#task-scale-matrix`).
+1. Classify the task scale (see `agent-instructions/development-workflow.md#task-scale-matrix`).
 2. Consult `skills-index.yaml` — match the task's tags against skill `triggers`.
 3. Load the matching skill's markdown file and follow its workflow.
 4. If no skill matches but the task recurs, consider `/new-skill`.
