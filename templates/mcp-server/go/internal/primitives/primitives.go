@@ -5,8 +5,14 @@ package primitives
 
 import (
 	"encoding/json"
+	"errors"
+	"regexp"
+	"strings"
 	"time"
 )
+
+var dottedNamePattern = regexp.MustCompile(`^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$`)
+var semverPattern = regexp.MustCompile(`^\d+\.\d+\.\d+$`)
 
 type Task struct {
 	TaskID          string           `json:"task_id"`
@@ -18,6 +24,40 @@ type Task struct {
 	Budget          *Budget          `json:"budget,omitempty"`
 	CapabilityToken *CapabilityToken `json:"capability_token,omitempty"`
 	Provenance      Provenance       `json:"provenance"`
+}
+
+// Validate enforces the transport-neutral Task invariants mirrored from
+// templates/agent-primitives/schemas/task.schema.json. Kind-specific input
+// validation still belongs at the Producer boundary.
+func (task *Task) Validate() error {
+	if strings.TrimSpace(task.TaskID) == "" {
+		return errors.New("task_id is required")
+	}
+	if !dottedNamePattern.MatchString(task.Kind) {
+		return errors.New("kind must be a dotted lowercase name")
+	}
+	if task.Version != "" && !semverPattern.MatchString(task.Version) {
+		return errors.New("version must be semver")
+	}
+	if !isJSONObject(task.Inputs) {
+		return errors.New("inputs must be a JSON object")
+	}
+	if len(task.Params) > 0 && !isJSONObject(task.Params) {
+		return errors.New("params must be a JSON object")
+	}
+	if strings.TrimSpace(task.IdempotencyKey) == "" {
+		return errors.New("idempotency_key is required")
+	}
+	if strings.TrimSpace(task.Provenance.ProducedBy.AgentID) == "" {
+		return errors.New("provenance.produced_by.agent_id is required")
+	}
+	if task.Provenance.ProducedAt.IsZero() {
+		return errors.New("provenance.produced_at is required")
+	}
+	if strings.TrimSpace(task.Provenance.StepID) == "" {
+		return errors.New("provenance.step_id is required")
+	}
+	return nil
 }
 
 type Budget struct {
@@ -54,10 +94,10 @@ type Error struct {
 }
 
 type Metrics struct {
-	TokensIn     int     `json:"tokens_in,omitempty"`
-	TokensOut    int     `json:"tokens_out,omitempty"`
-	WallSeconds  float64 `json:"wall_seconds,omitempty"`
-	CostUSD      float64 `json:"cost_usd,omitempty"`
+	TokensIn    int     `json:"tokens_in,omitempty"`
+	TokensOut   int     `json:"tokens_out,omitempty"`
+	WallSeconds float64 `json:"wall_seconds,omitempty"`
+	CostUSD     float64 `json:"cost_usd,omitempty"`
 }
 
 type Evidence struct {
@@ -89,17 +129,22 @@ type Producer struct {
 }
 
 type CapabilityToken struct {
-	TokenID         string       `json:"token_id"`
-	Issuer          string       `json:"issuer"`
-	Subject         string       `json:"subject"`
-	Capabilities    []Capability `json:"capabilities"`
-	ExpiresAt       time.Time    `json:"expires_at"`
-	AttenuatedFrom  string       `json:"attenuated_from,omitempty"`
-	Nonce           string       `json:"nonce,omitempty"`
-	Signature       string       `json:"signature,omitempty"`
+	TokenID        string       `json:"token_id"`
+	Issuer         string       `json:"issuer"`
+	Subject        string       `json:"subject"`
+	Capabilities   []Capability `json:"capabilities"`
+	ExpiresAt      time.Time    `json:"expires_at"`
+	AttenuatedFrom string       `json:"attenuated_from,omitempty"`
+	Nonce          string       `json:"nonce,omitempty"`
+	Signature      string       `json:"signature,omitempty"`
 }
 
 type Capability struct {
 	Action string          `json:"action"`
 	Scope  json.RawMessage `json:"scope,omitempty"`
+}
+
+func isJSONObject(raw json.RawMessage) bool {
+	var value map[string]json.RawMessage
+	return json.Unmarshal(raw, &value) == nil
 }

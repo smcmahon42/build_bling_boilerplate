@@ -17,11 +17,11 @@ import (
 )
 
 type Handler struct {
-	AgentID   string
-	Producers *producer.Registry
-	Capability capability.Verifier
+	AgentID     string
+	Producers   *producer.Registry
+	Capability  capability.Verifier
 	Idempotency idempotency.Cache
-	Now        func() time.Time
+	Now         func() time.Time
 }
 
 // ToolCall is the SDK-agnostic input: a tool name (= task kind) and its
@@ -42,11 +42,14 @@ func (h *Handler) Dispatch(ctx context.Context, call ToolCall) *primitives.Resul
 	if err := json.Unmarshal(call.Arguments, &task); err != nil {
 		return h.fail(now, "", "input.invalid", "arguments are not a valid Task: "+err.Error(), false)
 	}
+	if err := task.Validate(); err != nil {
+		return h.fail(now, task.TaskID, "input.invalid", err.Error(), false)
+	}
 	if task.Kind != call.Tool {
 		return h.fail(now, task.TaskID, "input.invalid", "tool name does not match Task.kind", false)
 	}
 
-	if denied := capability.Check(h.Capability, task.CapabilityToken, h.AgentID, "invoke."+task.Kind, now); denied != nil {
+	if denied := capability.Check(h.Capability, task.CapabilityToken, h.AgentID, "invoke."+task.Kind, task.Inputs, now); denied != nil {
 		return h.fail(now, task.TaskID, denied.Code, denied.Message, false)
 	}
 
@@ -71,12 +74,12 @@ func (h *Handler) Dispatch(ctx context.Context, call ToolCall) *primitives.Resul
 		Status:   primitives.StatusOK,
 		Output:   output,
 		Provenance: primitives.Provenance{
-			ProducedBy: primitives.Producer{AgentID: h.AgentID},
-			ProducedAt: now,
-			StepID:     stepID,
+			ProducedBy:   primitives.Producer{AgentID: h.AgentID},
+			ProducedAt:   now,
+			StepID:       stepID,
 			ParentStepID: task.Provenance.StepID,
-			TraceID:    task.Provenance.TraceID,
-			Ring:       task.Provenance.Ring + 1,
+			TraceID:      task.Provenance.TraceID,
+			Ring:         task.Provenance.Ring + 1,
 		},
 	}
 	h.Idempotency.Put(task.IdempotencyKey, result)

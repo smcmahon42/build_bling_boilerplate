@@ -7,6 +7,7 @@ package main
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -22,12 +23,13 @@ import (
 // templates/agent-primitives/schemas/ (or a shared types package) rather
 // than hand-writing them here.
 type task struct {
-	TaskID         string          `json:"task_id"`
-	Kind           string          `json:"kind"`
-	Version        string          `json:"version,omitempty"`
-	Inputs         json.RawMessage `json:"inputs"`
-	IdempotencyKey string          `json:"idempotency_key"`
-	Provenance     provenance      `json:"provenance"`
+	TaskID          string          `json:"task_id"`
+	Kind            string          `json:"kind"`
+	Version         string          `json:"version,omitempty"`
+	Inputs          json.RawMessage `json:"inputs"`
+	CapabilityToken json.RawMessage `json:"capability_token,omitempty"`
+	IdempotencyKey  string          `json:"idempotency_key"`
+	Provenance      provenance      `json:"provenance"`
 }
 
 type provenance struct {
@@ -68,12 +70,17 @@ func main() {
 	if token == "" {
 		fail(2, "cli.usage", "CAPABILITY_TOKEN env var is required")
 	}
+	capabilityToken, err := parseCapabilityToken(token)
+	if err != nil {
+		fail(2, "cli.usage", "CAPABILITY_TOKEN must be a JSON object or base64url-encoded JSON object")
+	}
 
 	inputs, _ := json.Marshal(map[string]string{"thread_id": *threadID})
 	t := task{
-		Kind:    *kind,
-		Version: "1.0.0",
-		Inputs:  inputs,
+		Kind:            *kind,
+		Version:         "1.0.0",
+		Inputs:          inputs,
+		CapabilityToken: capabilityToken,
 		Provenance: provenance{
 			ProducedAt: time.Now().UTC(),
 			Ring:       0,
@@ -133,6 +140,28 @@ func submit(baseURL, token string, t *task) (*result, error) {
 		return nil, errors.New(resp.Status)
 	}
 	return &r, nil
+}
+
+func parseCapabilityToken(token string) (json.RawMessage, error) {
+	if isJSONObject([]byte(token)) {
+		return json.RawMessage(token), nil
+	}
+	decoded, err := base64.RawURLEncoding.DecodeString(token)
+	if err != nil {
+		decoded, err = base64.URLEncoding.DecodeString(token)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if !isJSONObject(decoded) {
+		return nil, errors.New("capability token is not a JSON object")
+	}
+	return json.RawMessage(decoded), nil
+}
+
+func isJSONObject(raw []byte) bool {
+	var value map[string]json.RawMessage
+	return json.Unmarshal(raw, &value) == nil
 }
 
 func hashTask(t task) string {
