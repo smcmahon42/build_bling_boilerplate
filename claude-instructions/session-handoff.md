@@ -104,6 +104,25 @@ operators answer "why is this here?" without re-reading the whole repo.
 Skill name and session id alone usually carry most of the value; prompt
 summary and context add detail when the entry's origin is non-obvious.
 
+### Cost signals
+
+A separate optional block tracks how much agent work an entry has
+consumed over its lifetime. Recorded by `/end-session` on multi-session
+entries:
+
+```
+- **Cost signals:**
+  - **Sessions to date:** <integer>
+  - **Skills used (cumulative):** <list>
+  - **Operator turns:** <integer>
+  - **Context read (approx):** <files-touched count>, <lines if known>
+  - **Notes:** <free-form — e.g., absolute token counts from external tooling>
+```
+
+Full doctrine, including how to compose these signals with external
+billing or OpenTelemetry data, lives in
+[`agent-cost-observability.md`](agent-cost-observability.md).
+
 ## Lifecycle
 
 1. **A new item appears** in *Open work items* when the operator (human or
