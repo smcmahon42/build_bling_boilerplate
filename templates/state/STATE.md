@@ -31,6 +31,12 @@ One entry per open work item. Schema:
   - **Session:** <session id or YYYY-MM-DD-<seq>>
   - **Prompt summary:** <one line — what the operator asked when this came up>
   - **Context:** <file:line refs or related entries>
+- **Cost signals:** (optional, recorded by /end-session on multi-session entries)
+  - **Sessions to date:** <integer>
+  - **Skills used (cumulative):** <list>
+  - **Operator turns:** <integer>
+  - **Context read (approx):** <files-touched count>, <lines if known>
+  - **Notes:** <free-form — e.g., absolute token counts from external tooling>
 - **Notes:** <optional; keep short>
 
 Review defaults: `confirmed` for human-authored entries, `unreviewed` for
@@ -56,6 +62,7 @@ Older entries age out (git history retains everything). Schema:
 - **Session summary:** <one sentence — what changed>
 - **Commit / PR:** <link if useful>
 - **Review at completion:** confirmed (by operator) | self-completed (agent, under operator direction)
+- **Cost signals:** (optional, final totals at completion — see schema above)
 -->
 
 <!-- (none yet) -->

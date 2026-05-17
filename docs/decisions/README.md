@@ -18,6 +18,7 @@ See [0001](0001-record-architecture-decisions.md) for why this project uses ADRs
 | [0008](0008-session-handoff-state.md) | Project-local session-handoff state via STATE.md | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
 | [0009](0009-provenance-and-review-state-on-state-rows.md) | Provenance and review-state fields on STATE.md rows | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
 | [0010](0010-agent-autonomy-scope.md) | Agent-autonomy scope — a four-level doctrine | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
+| [0011](0011-agent-cost-observability.md) | Agent-cost observability via STATE.md Cost signals | Accepted (pattern) | <!-- YYYY-MM-DD filled on merge --> |
 
 <!--
 Add new rows here in number order. When a new ADR supersedes an old one, keep both rows and update the old row's Status to "Superseded by NNNN".
