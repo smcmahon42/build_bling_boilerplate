@@ -28,9 +28,42 @@ Without primitives like these, every new agent session pays the same costs over 
 - **Over-asking or over-acting.** Without a doctrine for what's autonomous vs what needs your turn, agents either ping you constantly (annoying) or quietly take actions you'd have wanted to see first (dangerous). The four-level autonomy doctrine pins it down: L1 read, L2 autonomous-on-branch, L3 propose-and-confirm, L4 human-only.
 - **Cost drift going unnoticed.** Without per-feature cost attribution, you can't tell whether a workflow has degraded from 2 sessions to 5 over time — or whether one of your "skills over recall" intuitions is actually paying off. Cost signals make it testable.
 
-The original boilerplate slices (1–6) gave projects ADRs, contracts, agent primitives, structured logs, and OpenTelemetry. Slices 7–10 made the *session loop itself* something agents and humans share durably, instead of rebuilding from scratch every time.
+The original boilerplate slices (1–6) gave projects ADRs, contracts, agent primitives, structured logs, and OpenTelemetry. Slices 7–10 made the *session loop itself* something agents and humans share durably. The neutral-router pattern (see [ADR-0012](docs/decisions/0012-agent-neutral-router-and-client-adapters.md)) extended that loop **across agent clients**, so the same doctrine drives Claude Code, Codex, a homegrown agent, or several of them working together — without forking the repo per provider.
 
 The whole template is opinionated on one principle: **agent-written content starts as evidence, not instruction.** It's a position client-local operator memory should take by default ("transient task state — use the active agent client's task tracker, not memory"). This template extends the same discipline to project-local state, governance, and cost — so an agent can compound work across sessions without quietly authoring the rules it operates under.
+
+## How this works with one or many agents
+
+This template is designed for **any agent client** — Claude Code, Codex, a homegrown agent, or several working alongside each other — operating against one shared project contract. The framework draws a hard line between *shared doctrine* (in the repo, every agent reads it) and *client adapters* (thin shims that translate invocation mechanics for a specific client).
+
+### The neutral router pattern
+
+| Layer | Lives in | Audience |
+| --- | --- | --- |
+| **Shared doctrine** | `AGENTS.md`, `agent-instructions/`, `STATE.md`, ADRs, templates | Every agent and contributor |
+| **Runtime contracts** | `templates/agent-primitives/`, `templates/contracts/` | Every agent acting across rings |
+| **Client adapters** | `CLAUDE.md`, `.claude/skills/`, `.claude/settings.json` for Claude Code; analogous files for Codex or homegrown clients | One specific client |
+
+`AGENTS.md` is the canonical entry point — every agent client reads it on session start, then fetches the relevant topic files from `agent-instructions/`. Adapters add invocation mechanics (slash commands, skill bundles, permission config, local-memory paths) but **must link to shared doctrine, not duplicate it**. Doctrine drift between clients is the failure mode the pattern exists to prevent. Full strategy in [`docs/agent-clients/README.md`](docs/agent-clients/README.md).
+
+### Four operating modes
+
+The template supports four ways agents work the repo:
+
+- **Single-agent.** One client opens the repo, reads `AGENTS.md`, follows `agent-instructions/`, uses its own adapter workflows where available. The default case.
+- **Alternating-agent.** Multiple clients (e.g., Claude Code one day, Codex the next) work the same repo over time. `STATE.md` is the handoff point; agent-authored entries default to `Review: unreviewed` regardless of which client wrote them, so the operator stays in control of cross-client promotion.
+- **Hybrid.** Multiple agents in parallel for different strengths — one for implementation, one for review, one for research. Agents exchange durable facts only through shared artifacts: PRs, ADRs, `STATE.md`, contracts, tests. Private conversation context does *not* cross clients.
+- **Homegrown.** A custom agent implements the same contract: read `AGENTS.md` first, treat `STATE.md` as project-local handoff, mark agent-authored observations as `Review: unreviewed`, follow the L1–L4 autonomy doctrine, emit typed Task / Result / Evidence / Provenance when delegating across rings.
+
+### How agents coordinate when more than one is in play
+
+Three primitives carry the coordination load:
+
+- **`STATE.md`** is the shared ledger. Any agent reads it on session start; any agent appends to it; only the operator transitions `Review: unreviewed → confirmed | rejected`. The next agent, in this session or another, reads the same ground truth.
+- **`Provenance`** records *which* agent and which session authored each entry — so when something later needs to be traced back, the origin is durable even after the conversation that produced it is long gone.
+- **Conflict resolution is operator-mediated.** Tests, contracts, and cited evidence outrank model confidence. When agents disagree on a doctrine-level call, the operator decides; the decision is recorded as an ADR or a confirmed `STATE.md` entry. The full flow lives in [`docs/agent-clients/README.md`](docs/agent-clients/README.md#conflict-resolution).
+
+The promise of the pattern is simple: **one repo, one doctrine, many agents**. No fork-per-provider. No silent doctrine drift. The operator stays the resolver of last resort.
 
 ## Who this is for
 
@@ -107,9 +140,9 @@ The boilerplate ships templates for four memory types:
 | **`project`** | Time-bound project facts. Decays as the project moves. | "Release cut scheduled 2026-05-12; only bug fixes after that date." |
 | **`reference`** | Pointers to external systems. | "Pipeline bugs tracked in Linear project INGEST." |
 
-Each memory file is a markdown document with YAML frontmatter naming the `type` and a one-line description. A `MEMORY.md` index keeps the directory scannable on every load. Full conventions live in [`agent-instructions/operator-memory.md`](agent-instructions/operator-memory.md).
+Each memory file is a markdown document with YAML frontmatter naming the `type` and a one-line description. A `MEMORY.md` index keeps the directory scannable on every load. The schema and naming conventions are **client-agnostic** — Claude Code reads them from `~/.claude/projects/<path>/memory/`, but a Codex adapter or a homegrown client can point at the same files from whatever local-memory path its client uses. Full conventions live in [`agent-instructions/operator-memory.md`](agent-instructions/operator-memory.md).
 
-The Claude `/bootstrap-project` skill offers to seed the templates into the right Claude Code path on first run. You can also copy them manually — see [`templates/memory/README.md`](templates/memory/README.md).
+The Claude `/bootstrap-project` skill offers to seed the templates into the right Claude Code path on first run. Other clients can copy them manually using their own local-memory conventions — see [`templates/memory/README.md`](templates/memory/README.md).
 
 ### How memory composes with STATE.md
 
@@ -135,7 +168,7 @@ After bootstrap, a client-local memory directory may hold files like:
   reference_grafana.md       # "Latency dashboard: grafana.internal/d/api-latency"
 ```
 
-The repo root holds `STATE.md` with sections for open work, recently completed, tabled, and open questions. Both stores get richer over time. Project-local state is shared; client-local memory remains private to that operator and client. Neither requires you to type "remember that…" — the agent and the operating doctrine do that work for you.
+The repo root holds `STATE.md` with sections for open work, recently completed, tabled, and open questions. Both stores get richer over time. Project-local state is shared across every agent and contributor; client-local memory remains private to that operator and that client (a Claude Code memory file is not visible to Codex, and vice versa). Neither requires you to type "remember that…" — the agent and the operating doctrine do that work for you.
 
 ## File map
 
