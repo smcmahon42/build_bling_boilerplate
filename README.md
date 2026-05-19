@@ -2,7 +2,7 @@
 
 A language-agnostic template for new AI / engineering projects — built for codebases where agents are first-class collaborators and work spans many sessions and contributors, not just one.
 
-It ships the **practices** (not the runtime scaffolding) that make a repo legible to humans and multiple agent clients from day one. The session-handoff, review-state, autonomy, and cost-observability primitives mean a new agent or contributor opening the project tomorrow already knows: what's open right now, what was just done, what the agent before them *proposed* (and whether you've reviewed it), what each feature has cost so far, *and* who you are and how you work — all from a single read of two files (`STATE.md` at the repo root, and optional client-local operator memory such as Claude Code's `~/.claude/projects/<path>/memory/`).
+It ships the **practices** (not the runtime scaffolding) that make a repo legible to humans and multiple agent clients from day one. The session-handoff, review-state, autonomy, and cost-observability primitives mean a new agent or contributor opening the project tomorrow already knows: what's open right now, what was just done, what the agent before them *proposed* (and whether you've reviewed it), what each feature has cost so far, *and* who you are and how you work — all from a single read of two stores: `STATE.md` at the repo root, and optional client-local operator memory in whatever local store your active agent client supports.
 
 What you get:
 
@@ -12,8 +12,8 @@ What you get:
 - **TDD as the starting posture**, with Playwright as the standard for frontend e2e.
 - **GitHub templates** for PRs, bugs, features, epics, and ADR proposals, plus a baseline label taxonomy.
 - **Pre-commit hooks** (gitleaks, hygiene, markdownlint) and CI workflows (security-scan, CodeQL, SBOM, license-check, ADR-lint).
-- **Client-local operator memory templates** — so the agent starts every session knowing your role, stack, preferences, and current project context, not asking. Four memory types (`user`, `feedback`, `project`, `reference`) seeded into `~/.claude/projects/<path>/memory/`. See [How operator memory works in your projects](#how-operator-memory-works-in-your-projects) below.
-- A **Claude `/bootstrap-project` adapter skill** that walks you through setup: placeholders, optional trim, memory seeding, GitHub labels, first ADR.
+- **Client-local operator memory templates** — so the agent starts every session knowing your role, stack, preferences, and current project context, not asking. Four memory types (`user`, `feedback`, `project`, `reference`) can be seeded into a client-specific local memory store. See [How operator memory works in your projects](#how-operator-memory-works-in-your-projects) below.
+- A **bootstrap workflow** that walks you through setup: placeholders, optional trim, memory seeding, GitHub labels, first ADR. Claude Code exposes it as `/bootstrap-project`; other clients can follow the same workflow manually or via their own adapter.
 - **`STATE.md` + start/end-session workflows** — project-local session-handoff ledger so the next session grounds in one file read instead of re-grepping the repo. See [`agent-instructions/session-handoff.md`](agent-instructions/session-handoff.md) and [ADR-0008](docs/decisions/0008-session-handoff-state.md).
 - **Review state + Provenance on every STATE.md row** — agent-authored entries start as evidence (`Review: unreviewed`) until the operator confirms; an optional `Provenance` block records skill, session, prompt summary, and context. Keeps the line between agent observation and operator direction explicit. See [ADR-0009](docs/decisions/0009-provenance-and-review-state-on-state-rows.md).
 - **Four-level agent-autonomy doctrine** — L1 read, L2 autonomous-on-branch (plan-first on medium/large), L3 propose-and-confirm, L4 human-only. Resolves the in-between of "this isn't a destructive op but it's not trivial either." See [`agent-instructions/agent-autonomy.md`](agent-instructions/agent-autonomy.md) and [ADR-0010](docs/decisions/0010-agent-autonomy-scope.md).
@@ -76,24 +76,24 @@ You're **not** looking for a runtime scaffold (no Go / Next.js / Python project 
 ## Use as a template
 
 1. Click **"Use this template"** on GitHub (or `gh repo create <name> --template=...`), then clone your new repo.
-2. Open the clone in your agent client. Claude Code users can run the bundled bootstrap skill; other clients can follow the same steps manually.
-3. For Claude Code, run the bootstrap skill:
+2. Open the clone in your agent client.
+3. Run the active client's bootstrap workflow. Claude Code users can run:
 
    ```
    /bootstrap-project
    ```
 
-   Other clients can follow the same steps manually. The bootstrap workflow will:
+   Other clients can follow the same steps manually or through their own adapter. The bootstrap workflow will:
    - Ask for project name, description, stack, frontend yes/no.
    - Replace `{{PLACEHOLDERS}}` across the tree.
-   - Offer to seed optional Claude Code memory for this project.
+   - Offer to seed optional client-local memory for this project.
    - Offer to `gh label sync` the label taxonomy.
    - Offer to scaffold a Playwright `e2e/` directory if you have a frontend.
    - Offer to kick off your project's first ADR.
    - Remove itself when done.
 4. Commit and push. You're set up.
 
-If you prefer to do it manually: grep for `{{` and replace the placeholders, then optionally copy `templates/memory/` into Claude Code's `~/.claude/projects/<encoded-path>/memory/` using the instructions in [`templates/memory/README.md`](templates/memory/README.md). Also copy `templates/state/STATE.md` to the project root and replace `{{PROJECT_NAME}}` — that's the session-handoff ledger described below.
+If you prefer to do it manually: grep for `{{` and replace the placeholders, then optionally copy `templates/memory/` into your active client's local memory directory using the instructions in [`templates/memory/README.md`](templates/memory/README.md). Also copy `templates/state/STATE.md` to the project root and replace `{{PROJECT_NAME}}` — that's the session-handoff ledger described below.
 
 ## A typical session
 
@@ -103,7 +103,7 @@ The boilerplate is built for projects worked across many sessions and contributo
 2. **Do the work** — per `AGENTS.md`'s house rules. The share-plan-before-editing rule governs medium and large tasks. The agent operates at **L2 autonomy** on a feature branch, escalating to **L3 (propose-and-confirm)** for anything touching `main`, settings, doctrine, dependencies, or CI; **L4** operations (force-push, production writes, external messages, infra) are human-only.
 3. **End-session workflow** — the agent reconciles `STATE.md` against what actually happened: completed items move to recent with a one-sentence summary, last-touched dates update, new items get added with `Review` set per author defaults (`confirmed` when operator-directed, `unreviewed` when agent-noticed), tabled items are marked with reason and un-table condition, open questions are recorded. `Cost signals` (sessions to date, operator turns, skills used) are captured on multi-session entries. `STATE.md` is committed separately from code.
 
-Architectural decisions that crystallize get an ADR (`/new-adr`); decisions still in flux stay in `STATE.md` and graduate later.
+Architectural decisions that crystallize get an ADR through the active client's new-ADR workflow; decisions still in flux stay in `STATE.md` and graduate later.
 
 ### How the four primitives compose
 
@@ -122,7 +122,7 @@ This template assumes two distinct stores of cross-session context, and ships te
 
 | Store | Answers | Lives in | Audience |
 | --- | --- | --- | --- |
-| **Client-local operator memory** | "Who am I working with, and how do they like to work?" | Client-specific local store, such as Claude Code's `~/.claude/projects/<encoded-path>/memory/` | This operator only |
+| **Client-local operator memory** | "Who am I working with, and how do they like to work?" | Client-specific local store | This operator only |
 | **Project-local `STATE.md`** | "Where is the project right now?" | Repo root (committed) | Every contributor and agent |
 
 ### Client-local operator memory
@@ -140,9 +140,9 @@ The boilerplate ships templates for four memory types:
 | **`project`** | Time-bound project facts. Decays as the project moves. | "Release cut scheduled 2026-05-12; only bug fixes after that date." |
 | **`reference`** | Pointers to external systems. | "Pipeline bugs tracked in Linear project INGEST." |
 
-Each memory file is a markdown document with YAML frontmatter naming the `type` and a one-line description. A `MEMORY.md` index keeps the directory scannable on every load. The schema and naming conventions are **client-agnostic** — Claude Code reads them from `~/.claude/projects/<path>/memory/`, but a Codex adapter or a homegrown client can point at the same files from whatever local-memory path its client uses. Full conventions live in [`agent-instructions/operator-memory.md`](agent-instructions/operator-memory.md).
+Each memory file is a markdown document with YAML frontmatter naming the `type` and a one-line description. A `MEMORY.md` index keeps the directory scannable on every load. The schema and naming conventions are **client-agnostic** — Claude Code can read them from `~/.claude/projects/<path>/memory/`, and a Codex adapter or a homegrown client can point at the same files from whatever local-memory path its client uses. Full conventions live in [`agent-instructions/operator-memory.md`](agent-instructions/operator-memory.md).
 
-The Claude `/bootstrap-project` skill offers to seed the templates into the right Claude Code path on first run. Other clients can copy them manually using their own local-memory conventions — see [`templates/memory/README.md`](templates/memory/README.md).
+The bootstrap workflow offers to seed the templates into the active client's local-memory path on first run. Other clients can copy them manually using their own local-memory conventions — see [`templates/memory/README.md`](templates/memory/README.md).
 
 ### How memory composes with STATE.md
 
@@ -160,7 +160,7 @@ Together, when a new session opens, the agent knows both **who you are** (memory
 After bootstrap, a client-local memory directory may hold files like:
 
 ```
-~/.claude/projects/-Users-you-projects-your-app/memory/
+<client-memory-dir>/
   MEMORY.md                  # index — always loaded into context
   user_role.md               # who you are
   feedback_pr_style.md       # "PRs stay small, single-purpose"
@@ -168,7 +168,7 @@ After bootstrap, a client-local memory directory may hold files like:
   reference_grafana.md       # "Latency dashboard: grafana.internal/d/api-latency"
 ```
 
-The repo root holds `STATE.md` with sections for open work, recently completed, tabled, and open questions. Both stores get richer over time. Project-local state is shared across every agent and contributor; client-local memory remains private to that operator and that client (a Claude Code memory file is not visible to Codex, and vice versa). Neither requires you to type "remember that…" — the agent and the operating doctrine do that work for you.
+The repo root holds `STATE.md` with sections for open work, recently completed, tabled, and open questions. Both stores get richer over time. Project-local state is shared across every agent and contributor; client-local memory remains private to that operator and that client unless the operator deliberately migrates it. Neither requires you to type "remember that…" — the agent and the operating doctrine do that work for you.
 
 ## File map
 
@@ -205,7 +205,7 @@ The repo root holds `STATE.md` with sections for open work, recently completed, 
 │   ├── dependabot.yml
 │   └── workflows/                      # pre-commit, adr-lint, security-scan, codeql, dast-scan, sbom, license-check
 ├── templates/
-│   ├── memory/                         # seed files for Claude Code memory
+│   ├── memory/                         # seed files for client-local operator memory
 │   └── state/                          # STATE.md seed (project-local session-handoff ledger)
 ├── .pre-commit-config.yaml
 ├── .editorconfig

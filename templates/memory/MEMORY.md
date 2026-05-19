@@ -1,7 +1,8 @@
 # Memory index — {{PROJECT_NAME}}
 
 <!--
-Every detailed memory file needs a one-line entry below so Claude knows it exists.
+Every detailed memory file needs a one-line entry below so the active client
+knows it exists.
 Keep entries under ~150 chars; keep this whole file under ~200 lines.
 
 Format: - [Title](file.md) — one-line hook

@@ -18,11 +18,11 @@ Continuous verification from code. Fast, cheap, runs on every change.
 | Check | Tool / workflow | Trigger | Owner | Artifact |
 | --- | --- | --- | --- | --- |
 | Secret scanning | `gitleaks` (pre-commit + `.github/workflows/pre-commit.yml`) | Every commit / PR | — | GH Actions log |
-| Dependency vulnerabilities | `.github/workflows/security-scan.yml` (govulncheck, npm audit, pip-audit, cargo audit) | Every PR, weekly | — | GH Actions log + `/dep-audit` report |
+| Dependency vulnerabilities | `.github/workflows/security-scan.yml` (govulncheck, npm audit, pip-audit, cargo audit) | Every PR, weekly | — | GH Actions log + dependency audit report |
 | SAST | `.github/workflows/codeql.yml` | Every PR, weekly | — | CodeQL alerts in Security tab |
 | License compliance | `.github/workflows/license-check.yml` | Every PR | — | GH Actions log |
-| Agent/diff review | `/security-review` skill | Security-relevant PRs | Author + reviewer | PR comment |
-| OWASP walk (30 items) | `/security-review` | Before each release | — | `remediation-plan.md` |
+| Agent/diff review | Security review workflow | Security-relevant PRs | Author + reviewer | PR comment |
+| OWASP walk (30 items) | Security review workflow | Before each release | — | `remediation-plan.md` |
 
 Phase 1 is **non-negotiable.** These checks run before anything in later phases is planned.
 

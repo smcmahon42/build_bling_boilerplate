@@ -59,7 +59,7 @@ See [`agent-instructions/security-practices.md`](agent-instructions/security-pra
 
 ## Supported versions
 
-Which versions receive security fixes depends on the project's release practice. Document it here during `/bootstrap-project`. Typical policy:
+Which versions receive security fixes depends on the project's release practice. Document it here during the bootstrap workflow. Typical policy:
 
 | Version | Security fixes |
 | --- | --- |

@@ -2,11 +2,11 @@
 
 > Copy this template to `remediation-plan.md` when you have your first finding to track. Delete this intro paragraph.
 
-Living document. Active security findings with status, owner, and verification. Organized by severity, not by source — a finding from `/security-review`, CI, DAST, or an external audit is tracked the same way.
+Living document. Active security findings with status, owner, and verification. Organized by severity, not by source — a finding from the security review workflow, CI, DAST, or an external audit is tracked the same way.
 
 ## How this document is used
 
-- **Every finding** from `/security-review`, CI scans, DAST, external audits, or bug bounty lands here.
+- **Every finding** from the security review workflow, CI scans, DAST, external audits, or bug bounty lands here.
 - **Rows are not deleted.** When a finding is fixed or explicitly accepted, the status changes but the history stays.
 - **Review cadence:** weekly triage; monthly review of accepted risks.
 

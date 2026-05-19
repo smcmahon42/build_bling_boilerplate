@@ -2,7 +2,9 @@
 
 Some agent clients support client-local memory: facts about the operator, feedback from past sessions, and short-lived project context stored outside the repo. This file defines the boundary and shape for that memory without making the repo depend on one LLM provider.
 
-Claude Code currently has first-class memory templates in `templates/memory/`. Codex or homegrown agents can adopt the same content model if they provide their own local memory store.
+The templates in `templates/memory/` use client-agnostic markdown. Claude Code
+has a first-class adapter for seeding them today; Codex or homegrown agents can
+adopt the same content model if they provide their own local memory store.
 
 ## What belongs in client-local memory
 
@@ -45,15 +47,18 @@ type: feedback
 
 When in doubt: if the next contributor on first clone needs to see it, it belongs in the repo. If only one operator's agent client needs it, it belongs in client-local memory.
 
-## Claude Code adapter
+## Client adapters
 
-Claude Code stores per-project memory under:
+Each adapter must document where per-project memory lives and whether it loads
+`MEMORY.md` automatically. Claude Code stores per-project memory under:
 
 ```text
 ~/.claude/projects/<encoded-project-path>/memory/
 ```
 
-The boilerplate ships Claude-compatible examples in `templates/memory/`. The `/bootstrap-project` skill can seed them, or the operator can copy them manually.
+The bootstrap workflow can seed the examples, or the operator can copy them
+manually into the active client's memory directory. Claude Code exposes this
+workflow as `/bootstrap-project`.
 
 ## Portable memory shape
 

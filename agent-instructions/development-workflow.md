@@ -75,7 +75,7 @@ This is a pattern, not a requirement. Adopt it when CI minutes or latency become
 - Security workflows pass (`security-scan`, `codeql`, `license-check`).
 - New ADR merged first if the change implements an architectural decision.
 - Docs updated in the matching bucket ([documentation-discipline.md](documentation-discipline.md)).
-- At least one human reviewer approved (even if a Claude review also ran).
+- At least one human reviewer approved (even if an agent review also ran).
 
 ## Escape hatches
 

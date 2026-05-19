@@ -35,7 +35,7 @@ Before adding any dependency, run the five-point check. "Run" is literal — if 
 1. Run the five-point check.
 2. If accepted: add it, commit with `chore(deps): add <pkg> for <reason>`, document *why* in the commit body.
 3. If it's a significant architectural choice (framework, runtime, database client), write an ADR.
-4. Run `/dep-audit` periodically to catch newly-disclosed vulnerabilities.
+4. Run the dependency audit workflow periodically to catch newly-disclosed vulnerabilities.
 
 ## Automation
 
@@ -45,11 +45,11 @@ Before adding any dependency, run the five-point check. "Run" is literal — if 
 
 ## AI-specific caution
 
-Claude and other coding assistants will occasionally invent plausible package names. Always:
+Coding assistants will occasionally invent plausible package names. Always:
 - Verify on the official registry.
 - Check download counts and star counts.
 - Skim the package's actual `README` — if it's empty or generic, stop.
 
-## Related skills
+## Related workflows
 
-- `/dep-audit` — run the vulnerability scanners your project needs.
+- **Dependency audit** — run the vulnerability scanners your project needs. Claude Code adapter: `/dep-audit`.

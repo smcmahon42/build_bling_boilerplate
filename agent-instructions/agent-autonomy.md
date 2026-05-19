@@ -82,8 +82,8 @@ approval by silence" is not allowed.
 - **Modify or supersede an existing Accepted ADR.** Write a superseding
   ADR; do not edit the original.
 - **Modify CI workflows** (`.github/workflows/`).
-- **Add or change a project dependency.** Run `/dep-audit` as part of the
-  proposal.
+- **Add or change a project dependency.** Run the dependency audit workflow as
+  part of the proposal.
 - **Modify `.gitignore`.** Adding entries can mask real problems.
 - **Modify the project license or `CODE_OF_CONDUCT.md`** — these are legal
   and community artifacts; never silent edits.

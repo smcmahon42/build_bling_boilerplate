@@ -36,7 +36,7 @@ Conventional Commits. See [`agent-instructions/commit-conventions.md`](agent-ins
 
 - Sharper or clearer wording in the instruction files.
 - New topic files that capture a recurring practice.
-- New skills in `.claude/skills/` that are broadly useful.
+- New adapter workflows that are broadly useful and link back to shared doctrine.
 - New CI workflows that are language-detecting and cost-free.
 - ADRs that record the boilerplate's own design decisions.
 
@@ -49,7 +49,7 @@ Conventional Commits. See [`agent-instructions/commit-conventions.md`](agent-ins
 
 ## Proposing a significant change
 
-Open an ADR proposal issue using `.github/ISSUE_TEMPLATE/adr_proposal.md`. Discuss there; on acceptance, the content moves into `docs/decisions/NNNN-<slug>.md` via a PR. See `.claude/skills/new-adr.md`.
+Open an ADR proposal issue using `.github/ISSUE_TEMPLATE/adr_proposal.md`. Discuss there; on acceptance, the content moves into `docs/decisions/NNNN-<slug>.md` via a PR. Use the active client's new-ADR workflow where available.
 
 ## Code of conduct
 

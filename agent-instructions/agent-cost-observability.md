@@ -14,8 +14,8 @@ when a workflow has degraded into "re-read everything every session."
 ## What's measurable, what isn't
 
 The agent itself does not have authoritative per-session token counts.
-Those numbers live in the harness (for example Claude Code's session log),
-the provider's billing export, or an OpenTelemetry trace from a custom proxy.
+Those numbers live in the client harness, the provider's billing export, or
+an OpenTelemetry trace from a custom proxy.
 This topic file describes the *proxies* an agent can record in STATE.md;
 projects compose those with their preferred external measurement layer
 for absolute numbers.
@@ -38,7 +38,7 @@ for absolute numbers.
 ## Cost signals on STATE.md entries
 
 Every entry in *Open work items*, *Recently completed*, and *Tabled* may
-carry an optional `Cost signals` block, captured by `/end-session`:
+carry an optional `Cost signals` block, captured by the end-session workflow:
 
 ```
 - **Cost signals:** (optional, best-effort)
@@ -97,9 +97,9 @@ Skip when:
 - External tooling already attributes cost at the right granularity
   (e.g. a dashboard keyed by session id is sufficient on its own).
 
-Default for the boilerplate's `/end-session` skill: record *Sessions to
-date* and *Operator turns* on every multi-session entry; record the
-rest only when the operator asks for full cost capture.
+Default for the boilerplate's end-session workflow: record *Sessions to date*
+and *Operator turns* on every multi-session entry; record the rest only when
+the operator asks for full cost capture.
 
 ## Why this composes with prior slices
 
@@ -123,6 +123,8 @@ data or a way to correlate it to external measurements.
   `Cost signals` block sits alongside `Provenance`.
 - `agent-instructions/agent-autonomy.md` — L3 operator turns are the
   costliest in attention and are worth tracking.
+- `docs/agent-clients/README.md` — maps shared workflow purposes to
+  client-specific invocations.
 - `.claude/skills/end-session.md` — the Claude adapter workflow that records
   cost signals. Other clients should implement the same STATE.md mutation.
 - `docs/decisions/0011-agent-cost-observability.md` — the architectural

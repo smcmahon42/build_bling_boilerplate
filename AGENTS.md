@@ -1,13 +1,13 @@
 # AGENTS.md — {{PROJECT_NAME}}
 
-> **For the setup agent:** if you are reading this right after cloning the template, run the bootstrap workflow from `.claude/skills/bootstrap-project.md` if you are in Claude Code, or follow its steps manually from any other agent client. It replaces placeholders, trims sections, and seeds optional client-local memory.
+> **For the setup agent:** if you are reading this right after cloning the template, run the bootstrap workflow through your active client adapter, or follow the manual steps in `README.md`. Claude Code exposes this as `.claude/skills/bootstrap-project.md`. The workflow replaces placeholders, trims sections, and seeds optional client-local memory.
 
 This file is the **agent-neutral router**. Every agent client — Claude Code, Codex, a homegrown agent, or a hybrid orchestrator — should read it at session start, then fetch the relevant topic files in `agent-instructions/`.
 
 Client-specific files are adapters, not doctrine:
 
 - `CLAUDE.md` points Claude Code here and advertises Claude-only slash-command skills.
-- Future Codex skills/plugins should point here instead of duplicating doctrine.
+- Codex skills/plugins and other future adapters should point here instead of duplicating doctrine.
 - Homegrown agents should implement this file plus the topic files as their repo contract.
 
 ---

@@ -26,7 +26,10 @@ See ADR [`0004`](../../docs/decisions/0004-contracts-as-source-of-truth.md) for 
 
 ## Adding a new contract
 
-Run `/new-contract` (the skill at [`.claude/skills/new-contract.md`](../../.claude/skills/new-contract.md)). It asks which form, scaffolds from the matching template, registers the contract, and reminds you about codegen wiring.
+Run the active client's new-contract workflow. Claude Code exposes this as
+[`/new-contract`](../../.claude/skills/new-contract.md). The workflow asks
+which form, scaffolds from the matching template, registers the contract, and
+reminds you about codegen wiring.
 
 Manual path: copy the relevant subdirectory's starter file, rename, edit, add a codegen target, file an ADR if the contract is load-bearing.
 

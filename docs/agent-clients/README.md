@@ -15,6 +15,27 @@ This repo is designed for multiple agent clients working against one shared proj
 
 The rule is simple: shared behavior goes in the repo contract; client mechanics stay in adapters.
 
+## Shared workflows, adapter invocations
+
+Shared docs refer to workflows by purpose. Each agent client can expose the
+same workflow through slash commands, skills, plugins, prompts, scripts, or a
+manual checklist.
+
+| Workflow purpose | Shared trigger | Claude Code adapter | Other clients |
+| --- | --- | --- | --- |
+| Bootstrap a cloned template | First setup after using the template | `/bootstrap-project` | Follow the bootstrap steps in `README.md` and `AGENTS.md` manually or through a client-specific adapter |
+| Start a work session | Non-trivial session start | `/start-session` | Read `STATE.md`, surface blocked / unreviewed / in-progress items, then ask for direction |
+| End a work session | Non-trivial session close | `/end-session` | Reconcile `STATE.md`, move completed items, record open questions and cost signals |
+| Security review | Security-relevant diff or pre-release review | `/security-review` | Walk `agent-instructions/security-practices.md` against the current diff |
+| Dependency audit | Adding dependencies or scheduled dependency review | `/dep-audit` | Run the language-specific scanners and the five-point check in `dependency-vetting.md` |
+| Test gap review | Release prep or suspected coverage gap | `/test-gaps` | Inspect changed behavior against `testing-practices.md` and list missing critical-path tests |
+| New ADR | Architectural decision | `/new-adr` | Copy `docs/decisions/TEMPLATE.md`, assign the next number, update the ADR index |
+| New contract | New OpenAPI / JSON Schema / protobuf contract | `/new-contract` | Copy the matching starter from `templates/contracts/`, wire codegen, update docs |
+| New adapter skill | Recurring client-specific workflow | `/new-skill` | Add a thin client adapter that links back to shared doctrine |
+
+Adapter documentation may name the concrete command. Shared doctrine should
+prefer the workflow purpose unless the client-specific invocation is the topic.
+
 ## Supported operating modes
 
 ### Single-agent mode
@@ -51,6 +72,14 @@ Every adapter should answer these questions without changing shared doctrine:
 - How does the client record session handoff in `STATE.md`?
 
 If the answer affects all agents, update `AGENTS.md` or `agent-instructions/`. If it affects only one client, update that adapter.
+
+## Codex baseline
+
+Codex can operate this template directly from `AGENTS.md`; a separate
+repo-local `CODEX.md` is not required for the shared doctrine. Add Codex-specific
+skills, plugin metadata, or local memory wiring only when they provide concrete
+workflow mechanics, and keep those adapter files thin links back to
+`AGENTS.md` and `agent-instructions/`.
 
 ## Conflict resolution
 

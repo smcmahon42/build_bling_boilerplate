@@ -1,15 +1,15 @@
 # STATE — {{PROJECT_NAME}}
 
 > Project-local session-handoff ledger. **Not** user-local memory (which lives
-> in client-local memory, such as Claude Code's `~/.claude/projects/<encoded-path>/memory/`). **Not** an Architectural
+> in client-local memory, such as a client-specific per-project memory directory). **Not** an Architectural
 > Decision Record (which lives in `docs/decisions/`). This file is the running
 > record of what's open, in-progress, blocked, tabled, or recently completed —
 > so the next session can ground itself in seconds without re-reading the repo.
 >
 > Schema and lifecycle live in `agent-instructions/session-handoff.md` after
 > this template is copied to the project root.
-> Run `/start-session` at the top of each work session and `/end-session`
-> before wrapping up.
+> Run the active client's start-session workflow at the top of each work
+> session and the end-session workflow before wrapping up.
 
 ---
 
@@ -27,11 +27,11 @@ One entry per open work item. Schema:
 - **Last touched:** YYYY-MM-DD
 - **Next step:** <one line — what unblocks progress>
 - **Provenance:** (optional but encouraged for agent-authored entries)
-  - **Skill:** <skill that produced this entry, if any>
+  - **Workflow:** <workflow that produced this entry, if any>
   - **Session:** <session id or YYYY-MM-DD-<seq>>
   - **Prompt summary:** <one line — what the operator asked when this came up>
   - **Context:** <file:line refs or related entries>
-- **Cost signals:** (optional, recorded by /end-session on multi-session entries)
+- **Cost signals:** (optional, recorded by the end-session workflow on multi-session entries)
   - **Sessions to date:** <integer>
   - **Skills used (cumulative):** <list>
   - **Operator turns:** <integer>
@@ -95,7 +95,7 @@ into an open work item or gets removed once answered. Schema:
 - **Asked by:** <agent or human>
 - **Waiting on:** <who or what>
 - **Provenance:** (optional)
-  - **Skill:** <skill that produced the question>
+  - **Workflow:** <workflow that produced the question>
   - **Session:** <session id>
   - **Context:** <file:line refs>
 -->
