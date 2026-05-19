@@ -15,7 +15,7 @@ The repo needs one shared project contract with thin client adapters.
 
 ## Decision
 
-Use `AGENTS.md` as the canonical agent-neutral router. Move shared topic guidance into `agent-instructions/`. Keep `CLAUDE.md` and `.claude/` as Claude Code adapters that point back to the shared doctrine. Future Codex or homegrown integrations must add adapter mechanics without duplicating shared rules.
+Use `AGENTS.md` as the canonical agent-neutral router. Move shared topic guidance into `agent-instructions/`. Keep `CLAUDE.md` and `.claude/` as Claude Code adapters that point back to the shared doctrine. Codex and homegrown integrations must add adapter mechanics without duplicating shared rules.
 
 ## Alternatives considered
 

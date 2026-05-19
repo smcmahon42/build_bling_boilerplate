@@ -2,7 +2,9 @@
 
 Security is a first-class concern. AI projects face the standard web attack surface **plus** a distinct set of LLM and agent-specific risks. The boilerplate tracks three OWASP lists and wires CI to enforce the baseline.
 
-When in doubt, run `/security-review` — the skill walks all three lists against the current diff.
+When in doubt, run the active client's security review workflow. For Claude Code
+this is `/security-review`; other clients should walk this file against the
+current diff.
 
 ## The three OWASP lists
 
@@ -15,7 +17,7 @@ When in doubt, run `/security-review` — the skill walks all three lists agains
 | A03 | Injection | Parameterized queries; no string concatenation into SQL/shell/HTML/LDAP. |
 | A04 | Insecure design | Threat model the feature before building; list the abuse cases. |
 | A05 | Security misconfiguration | Secure defaults; remove sample accounts; disable directory listing; strict CSP. |
-| A06 | Vulnerable & outdated components | `security-scan` workflow + `/dep-audit` skill. |
+| A06 | Vulnerable & outdated components | `security-scan` workflow + the dependency audit workflow. |
 | A07 | Identification & authentication failures | MFA option; rate-limit login; rotate sessions on privilege change. |
 | A08 | Software & data integrity | Sign artifacts; verify supply chain; SBOM on every release. |
 | A09 | Logging & monitoring failures | Log auth events, auth failures, admin actions; alert on suspicious patterns. |
@@ -78,7 +80,7 @@ If the change:
 
 …it gets an ADR. See `docs/decisions/`.
 
-## Related skills
+## Related workflows
 
-- `/security-review` — walk all 30 OWASP items against current diff; produce prioritized findings.
-- `/dep-audit` — run language-specific vulnerability scanners.
+- **Security review** — walk all 30 OWASP items against current diff; produce prioritized findings. Claude Code adapter: `/security-review`.
+- **Dependency audit** — run language-specific vulnerability scanners. Claude Code adapter: `/dep-audit`.

@@ -23,7 +23,9 @@ One contract, one form. Don't hand-translate a proto into an OpenAPI; reference 
 
 ## Adding a new contract
 
-Run `/new-contract` (`.claude/skills/new-contract.md`). It picks the form, scaffolds from the template, and registers the contract.
+Run the active client's new-contract workflow. Claude Code exposes this as
+[`/new-contract`](../.claude/skills/new-contract.md). The workflow picks the
+form, scaffolds from the template, and registers the contract.
 
 Manual path:
 
@@ -77,4 +79,5 @@ Task kinds are JSON Schema pairs (input + output) registered in the project's ta
 - [`agent-primitives.md`](agent-primitives.md) — the primitives contracts reference.
 - [`templates/contracts/README.md`](../templates/contracts/README.md) — decision matrix and form details.
 - [`documentation-discipline.md`](documentation-discipline.md) — how contracts fit into the doc-routing table.
-- [`.claude/skills/new-contract.md`](../.claude/skills/new-contract.md) — scaffolding skill.
+- [`../docs/agent-clients/README.md`](../docs/agent-clients/README.md) — shared workflow purposes and adapter invocations.
+- [`.claude/skills/new-contract.md`](../.claude/skills/new-contract.md) — Claude adapter scaffolding workflow.

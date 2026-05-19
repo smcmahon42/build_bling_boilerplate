@@ -6,8 +6,8 @@ type: feedback
 
 <!--
 Feedback memories hold guidance the operator has given: what to keep doing, what to stop
-doing. Record both corrections AND confirmations — if Claude only saves corrections, it
-drifts away from approaches the operator has already validated.
+doing. Record both corrections AND confirmations — if an agent only saves
+corrections, it drifts away from approaches the operator has already validated.
 
 Structure each feedback entry as:
 

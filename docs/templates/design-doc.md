@@ -85,7 +85,9 @@ How we'll know it works.
 
 ## Security review
 
-Walk the relevant OWASP categories. Reuse the structure from `.claude/skills/security-review.md`.
+Walk the relevant OWASP categories. Reuse the structure from
+`agent-instructions/security-practices.md`; client adapters may expose this as
+a security review command such as Claude Code's `/security-review`.
 
 - **OWASP Web Top 10:** <which apply; one line each>
 - **OWASP LLM Top 10:** <which apply>

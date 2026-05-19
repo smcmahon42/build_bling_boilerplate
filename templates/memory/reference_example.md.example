@@ -5,9 +5,9 @@ type: reference
 ---
 
 <!--
-Reference memories tell Claude where to look in external systems. They don't hold
-the information itself — they hold the pointer so Claude knows when an external
-lookup is appropriate.
+Reference memories tell the active agent client where to look in external
+systems. They don't hold the information itself — they hold the pointer so the
+client knows when an external lookup is appropriate.
 
 Examples:
 

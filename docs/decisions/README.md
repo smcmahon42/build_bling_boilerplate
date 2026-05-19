@@ -36,7 +36,9 @@ Template row:
 
 ## How to add an ADR
 
-Run `/new-adr` (the skill at `.claude/skills/new-adr.md`) — it handles numbering, template copy, status line, and index update.
+Run the active client's new-ADR workflow. Claude Code exposes this as
+[`/new-adr`](../../.claude/skills/new-adr.md). The workflow handles numbering,
+template copy, status line, and index update.
 
 Manual process:
 

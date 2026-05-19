@@ -1,6 +1,6 @@
 ---
 name: user_role
-description: Who the operator is, their role, and how they like to collaborate with Claude on this project
+description: Who the operator is, their role, and how they like to collaborate with an agent on this project
 type: user
 ---
 

@@ -49,7 +49,7 @@ All of these must be true for the plan to be "done":
 - [ ] All milestones checked.
 - [ ] Tests for each milestone shipped and green.
 - [ ] Docs updated (ADR / runbook / module README as applicable).
-- [ ] Security review completed (`/security-review` run on the cumulative diff).
+- [ ] Security review completed against the cumulative diff.
 - [ ] Tracking issue / epic closed.
 
 ## Related

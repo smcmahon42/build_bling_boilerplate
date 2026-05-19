@@ -18,13 +18,14 @@ Templates to copy when you start using each:
 
 ## When to update
 
-- **Remediation plan:** whenever a security finding is accepted from `/security-review`, CI, DAST, or an external report. Update status when findings are fixed or accepted as risk.
+- **Remediation plan:** whenever a security finding is accepted from the security review workflow, CI, DAST, or an external report. Update status when findings are fixed or accepted as risk.
 - **Testing plan:** revisit quarterly or when the system changes materially (new attack surface, new data class, new integration).
 - **Threat model:** revisit when architecture changes (new service, new auth boundary, new external integration, new data class handled).
 
 ## Related
 
 - [`agent-instructions/security-practices.md`](../../agent-instructions/security-practices.md) — the three OWASP lists.
-- [`/security-review`](../../.claude/skills/security-review.md) — run against the current diff.
-- [`/dep-audit`](../../.claude/skills/dep-audit.md) — language-detecting vuln scans.
+- [`../agent-clients/README.md`](../agent-clients/README.md) — shared workflow purposes and adapter invocations.
+- [`/security-review`](../../.claude/skills/security-review.md) — Claude adapter security review workflow.
+- [`/dep-audit`](../../.claude/skills/dep-audit.md) — Claude adapter dependency audit workflow.
 - [`SECURITY.md`](../../SECURITY.md) — disclosure policy.

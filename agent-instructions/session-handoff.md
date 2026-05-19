@@ -6,9 +6,10 @@ instead of re-reading the repo to figure out what's open, what's done, and
 what got parked.
 
 Pair this with [`templates/state/STATE.md`](../templates/state/STATE.md) (the
-seed) and an adapter-specific start/end-session workflow. Claude Code ships
+seed) and an adapter-specific start/end-session workflow. Claude Code exposes
 those workflows as [`/start-session`](../.claude/skills/start-session.md) and
-[`/end-session`](../.claude/skills/end-session.md).
+[`/end-session`](../.claude/skills/end-session.md); other clients should
+implement the same STATE.md read/update behavior.
 
 ## What STATE.md is
 
@@ -93,7 +94,7 @@ Optional but strongly encouraged for any agent-authored entry. The block:
 
 ```
 - **Provenance:**
-  - **Skill:** <skill name, e.g. `/security-review`, or `manual`>
+  - **Workflow:** <workflow name, e.g. `security review`, or `manual`>
   - **Session:** <session id, e.g. `2026-05-17-001`>
   - **Prompt summary:** <one line — what the operator asked when this came up>
   - **Context:** <file:line refs or related entry slugs>
@@ -107,8 +108,8 @@ summary and context add detail when the entry's origin is non-obvious.
 ### Cost signals
 
 A separate optional block tracks how much agent work an entry has
-consumed over its lifetime. Recorded by `/end-session` on multi-session
-entries:
+consumed over its lifetime. Recorded by the end-session workflow on
+multi-session entries:
 
 ```
 - **Cost signals:**
@@ -144,7 +145,7 @@ billing or OpenTelemetry data, lives in
 5. **On tabling** the item moves to *Tabled* with `Why tabled` and
    `Un-table when`. The `Review` field carries forward (`stale`,
    `rejected`, or `tabled-only` when neither applies).
-6. ***Recently completed* ages out** at the next `/end-session` after an
+6. ***Recently completed* ages out** at the next end-session run after an
    entry exceeds the rolling window. Git history retains everything; STATE.md
    stays scannable.
 7. **Open questions** resolve into open work items when the answer changes
@@ -170,6 +171,8 @@ replacing "re-read the repo" with "read one file."
 ## Related
 
 - [`templates/state/STATE.md`](../templates/state/STATE.md) — the seed.
+- [`../docs/agent-clients/README.md`](../docs/agent-clients/README.md) —
+  shared workflow purposes and adapter invocations.
 - [`.claude/skills/start-session.md`](../.claude/skills/start-session.md) —
   Claude adapter workflow that opens a session against STATE.md.
 - [`.claude/skills/end-session.md`](../.claude/skills/end-session.md) —
